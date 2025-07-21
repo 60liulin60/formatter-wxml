@@ -4,6 +4,9 @@ module.exports = {
   target: 'node',
   mode: 'none',
   entry: './src/extension.ts',
+  cache: {
+    type: 'filesystem',
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'extension.js',

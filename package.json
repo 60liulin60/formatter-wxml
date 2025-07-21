@@ -5,6 +5,14 @@
   "version": "1.2.2",
   "publisher": "wxml-formatter-team",
   "icon": "images/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/60liulin60/formatter-wxml.git"
+  },
+  "bugs": {
+    "url": "https://github.com/60liulin60/formatter-wxml/issues"
+  },
+  "homepage": "https://github.com/60liulin60/formatter-wxml#readme",
   "engines": {
     "vscode": "^1.74.0"
   },

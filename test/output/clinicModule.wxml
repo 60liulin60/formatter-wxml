@@ -1,0 +1,119 @@
+<view class="clinic-content-module">
+  <view class="clinic-card-wrap">
+    <view class="clinic-head-wrap">
+      <view class="image-wrap">
+        <image
+          wx:if="{{ clinicInfo.clinicUrl && clinicInfo.clinicUrl[0] }}"
+          src="{{ clinicInfo.clinicUrl[0] }}"
+          mode="widthFix"
+          class="image" />
+        <image
+          wx:if="{{ !clinicInfo.clinicUrl || !clinicInfo.clinicUrl[0] }}"
+          src="{{ NET_IMAGE_PIR_FIX }}/icon-index-default--clinic-bg.png"
+          mode="widthFix"
+          class="image" />
+      </view>
+      <view class="base-wrap">
+        <view class="clinic-title">
+          <view class="title">{{clinicInfo.clinicName || clinicInfo.clinicMain}}</view>
+          <view class="change-btn" wx:if="{{ showClinicSelectBtn }}" catch:tap="clinicSelectShowHandle">
+            <view class="text">切换</view>
+            <image class="icon" src="{{NET_IMAGE_PIR_FIX}}/cz_imgs_new/change_button_cz_icon.png" />
+          </view>
+        </view>
+        <view class="custom-info-wrap">
+          <view class="info-wrap" wx:for="{{ customInfo }}" wx:key="index">
+            <image class="image" src="{{ NET_IMAGE_PIR_FIX }}/cz_imgs_new/{{ item.icon }}" />
+            <view class="text">{{ item.label || "" }}</view>
+          </view>
+        </view>
+      </view>
+      <view class="institution-tags-list-wrap">
+        <view class="tags-item-wrap" wx:for="{{ clinicDoorHeadTags }}" wx:key="index">
+          <image class="item-icon" src="{{ NET_IMAGE_PIR_FIX }}/cz_imgs_new/home_tag_cz_icon.png" />
+          <view class="item-label">{{ item }}</view>
+        </view>
+      </view>
+    </view>
+    <view class="brief-introduction" wx:if="{{ clinicInfo.clinicIntro }}">
+      <omitTextAndBtn
+        title="简介"
+        content="{{ clinicIntro }}"
+        btnText="查看"
+        bind:btnHandle="onClinicBaseInfoDialogShow">
+      </omitTextAndBtn>
+    </view>
+  </view>
+  <view class="doctor-card-wrap" wx:if="{{doctorList.length > 0}}">
+    <view class="title">
+      <text>医生</text>
+      <text class="number">（{{clinicInfo.doctorNumber}}）</text>
+      <view class="all-doctor-wrap" catch:tap="gotoMoreDoctorHandle">
+        <text>全部医生</text>
+        <view>
+          <van-icon size="24rpx" name="arrow" color="var(--theme-color)" />
+        </view>
+      </view>
+    </view>
+    <view class="doctor-card-scroll-wrap">
+      <scroll-view
+        class="scroll-view_H"
+        scroll-x="true"
+        scroll-left="{{scrollLeft}}"
+        bindscrolltolower="loadMore">
+        <view class="scroll-view-card {{doctorList.length===1? 'only-one':''}}" wx:for="{{doctorList}}" wx:key="id">
+          <view class="card">
+            <view class="avatar-image">
+              <autoImage
+                imgCanClick="{{false}}"
+                imgUrl="{{item.avatar|| NET_IMAGE_PIR_FIX +'icon-doctor-avatar-default.png'}}"
+                imgList="{{[item.avatar]}}"
+                actualWrapWidth="{{120}}"
+                actualWrapHeightMax="{{120}}"
+                actualWrapHeightMin="{{120}}">
+              </autoImage>
+            </view>
+            <view class="doctor-base-info">
+              <view class="doctor-name-wrap">
+                <text class="name">{{ item.name }}医生</text>
+                <text class="doctor-title">{{item.title||'-'}}</text>
+              </view>
+              <view class="introduction" wx:if="{{clinicModuleUtils.doctorTag(item.goodAtIllnessTags || [])}}">
+                擅长：{{clinicModuleUtils.doctorTag(item.goodAtIllnessTags || [])}}
+              </view>
+              <view class="btn-wrap">
+                <view class="btn more" data-doctor-id="{{item.doctorId}}" catch:tap="goBusinessCard">
+                  更多服务
+                </view>
+                <view data-item="{{item}}" class="btn inline-consult" catch:tap="gotoPayHandle">
+                  <block wx:if="{{item.boolOnline}}">
+                    <block wx:if="{{!item.priceBool}}">
+                      <text class="text">咨询</text>
+                      <text class="price">¥{{item.price ||'0'}}</text>
+                    </block>
+                    <block wx:if="{{item.priceBool}}">
+                      <view class="text">在线咨询</view>
+                    </block>
+                  </block>
+                  <block wx:else>
+                    <text class="text disabled">休息中</text>
+                  </block>
+                  <loginBtn
+                    custom-class="loginBtn-wrap"
+                    wx:if="{{!isPermissions}}"
+                    bind:loginSuccess="loginSuccessPay"
+                    clinicStatus="{{true}}">
+                  </loginBtn>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+<clinicBaseInfoDialog clinicInfo="{{clinicInfo}}" clinicIntro="{{clinicIntro}}" show="{{showClinicBaseInfoDialog}}">
+</clinicBaseInfoDialog>
+<wxs module="clinicModuleUtils" src="./clinicModule.wxs">
+</wxs>

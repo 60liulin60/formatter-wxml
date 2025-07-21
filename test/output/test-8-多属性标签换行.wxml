@@ -1,0 +1,7 @@
+<button
+  class="btn"
+  style="color: red;"
+  bind:tap="onTap"
+  data-id="{{item.id}}"
+  data-type="{{item.type}}"
+  disabled="{{loading}}">提交</button>

@@ -1,0 +1,18 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="128" height="128" rx="16" fill="#07C160"/>
+  
+  <!-- WXML 符号 -->
+  <g fill="white">
+    <!-- 左括号 < -->
+    <path d="M32 44L20 64L32 84" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    
+    <!-- 右括号 > -->
+    <path d="M96 44L108 64L96 84" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    
+    <!-- 格式化符号 -->
+    <rect x="44" y="48" width="40" height="6" rx="3" />
+    <rect x="44" y="61" width="24" height="6" rx="3" />
+    <rect x="44" y="74" width="32" height="6" rx="3" />
+  </g>
+</svg> 

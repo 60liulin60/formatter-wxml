@@ -1,0 +1,5 @@
+<view>
+  <text wx:if="{{condition}}">显示文本</text>
+  <text wx:elif="{{other}}">其他文本</text>
+  <text wx:else>默认文本</text>
+</view>

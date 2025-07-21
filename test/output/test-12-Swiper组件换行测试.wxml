@@ -1,0 +1,9 @@
+<swiper indicator-dots="true">
+  <swiper-item>
+    <view>页面1
+    </view>
+  </swiper-item>
+  <swiper-item>
+    <view>页面2
+    </view>
+  </swiper-item></swiper>

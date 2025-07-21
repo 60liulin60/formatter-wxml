@@ -1,0 +1,157 @@
+{
+  "name": "wxml-formatter",
+  "displayName": "WXML Formatter",
+  "description": "A formatter for WeChat Mini Program WXML files",
+  "version": "1.2.2",
+  "publisher": "wxml-formatter-team",
+  "icon": "images/logo.png",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "wxml",
+    "formatter",
+    "wechat",
+    "miniprogram",
+    "format"
+  ],
+  "activationEvents": [
+    "onLanguage:wxml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "wxml",
+        "aliases": [
+          "WXML",
+          "wxml"
+        ],
+        "extensions": [
+          ".wxml"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "wxml",
+        "scopeName": "text.html.wxml",
+        "path": "./syntaxes/wxml.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "wxml-formatter.format",
+        "title": "Format WXML",
+        "category": "WXML Formatter"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceExtname == .wxml",
+          "command": "wxml-formatter.format",
+          "group": "1_modification"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "WXML Formatter",
+      "properties": {
+        "wxml-formatter.indentSize": {
+          "type": "number",
+          "default": 2,
+          "description": "缩进空格数"
+        },
+        "wxml-formatter.maxLineLength": {
+          "type": "number",
+          "default": 120,
+          "description": "最大行长度"
+        },
+        "wxml-formatter.preserveNewlines": {
+          "type": "boolean",
+          "default": true,
+          "description": "保留现有换行符"
+        },
+        "wxml-formatter.wrapAttributes": {
+          "type": "number",
+          "default": 3,
+          "description": "超过多少个属性时换行"
+        },
+        "wxml-formatter.alignAttributes": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否对齐属性"
+        },
+        "wxml-formatter.sortAttributes": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否排序属性"
+        },
+        "wxml-formatter.selfClosingTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["image", "input", "icon", "video", "audio", "camera", "live-player", "live-pusher", "map", "canvas", "web-view", "ad", "official-account", "open-data"],
+          "description": "自闭合标签列表"
+        },
+        "wxml-formatter.inlineTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["text", "icon", "rich-text"],
+          "description": "内联标签列表（内容不换行）"
+        },
+        "wxml-formatter.blockTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "view", "scroll-view", "swiper", "swiper-item", "movable-area", "movable-view",
+            "cover-view", "cover-image", "page-container", "share-element",
+            "form", "picker", "picker-view", "picker-view-column", "slider", "switch", "textarea",
+            "navigator", "functional-page-navigator", "live-player", "live-pusher",
+            "map", "canvas", "web-view", "ad", "official-account", "open-data",
+            "rich-text", "progress", "button", "checkbox", "radio", "label",
+            "editor", "keyboard-accessory", "match-media", "page-meta", "navigation-bar",
+            "custom-tab-bar", "voip-room", "subscribe", "favorites", "block", "template",
+            "import", "include", "wxs", "slot"
+          ],
+          "description": "块级标签列表"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "cd test && node run-tests.js",
+    "test:unit": "cd test && node formatter.test.js",
+    "test:files": "cd test && node -e \"require('./run-tests').runFileTests()\"",
+    "test:performance": "cd test && node -e \"require('./run-tests').runPerformanceTests()\"",
+    "package": "vsce package",
+    "package:pre-release": "vsce package --pre-release",
+    "publish": "vsce publish",
+    "publish:pre-release": "vsce publish --pre-release"
+  },
+  "devDependencies": {
+    "@types/js-beautify": "^1.14.3",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "typescript": "^4.9.4",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "js-beautify": "^1.14.7"
+  }
+}

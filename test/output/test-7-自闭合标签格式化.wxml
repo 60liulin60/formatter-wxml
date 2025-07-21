@@ -1,0 +1,7 @@
+<view>
+  <image src="{{avatar}}" mode="aspectFit" />
+  <input type="text" placeholder="请输入">
+  </input>
+  <icon type="success" size="20">
+  </icon>
+</view>

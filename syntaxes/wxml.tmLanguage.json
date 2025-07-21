@@ -1,0 +1,165 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "WXML",
+  "scopeName": "text.html.wxml",
+  "patterns": [
+    {
+      "include": "#wxmlComment"
+    },
+    {
+      "include": "#wxmlTag"
+    },
+    {
+      "include": "#wxmlExpression"
+    },
+    {
+      "include": "#htmlEntity"
+    }
+  ],
+  "repository": {
+    "wxmlComment": {
+      "name": "comment.block.html",
+      "begin": "<!--",
+      "end": "-->",
+      "patterns": [
+        {
+          "name": "invalid.illegal.bad-comments-or-CDATA.html",
+          "match": "--"
+        }
+      ]
+    },
+    "wxmlTag": {
+      "patterns": [
+        {
+          "name": "meta.tag.wxml",
+          "begin": "(</?)(view|text|button|image|input|textarea|picker|slider|switch|checkbox|radio|form|navigator|audio|video|camera|live-player|live-pusher|map|canvas|web-view|ad|official-account|open-data|rich-text|progress|icon|loading|movable-area|movable-view|cover-view|cover-image|scroll-view|swiper|swiper-item|block|template|import|include)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.tag.begin.html"
+            },
+            "2": {
+              "name": "entity.name.tag.wxml"
+            }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.tag.end.html"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#wxmlAttribute"
+            }
+          ]
+        },
+        {
+          "name": "meta.tag.html",
+          "begin": "(</?)(\\w+)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.tag.begin.html"
+            },
+            "2": {
+              "name": "entity.name.tag.html"
+            }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.tag.end.html"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#wxmlAttribute"
+            }
+          ]
+        }
+      ]
+    },
+    "wxmlAttribute": {
+      "patterns": [
+        {
+          "name": "meta.attribute.wxml",
+          "match": "\\b(wx:|bind:|catch:|capture-bind:|capture-catch:)([a-zA-Z-]+)",
+          "captures": {
+            "1": {
+              "name": "entity.other.attribute-name.wxml.prefix"
+            },
+            "2": {
+              "name": "entity.other.attribute-name.wxml"
+            }
+          }
+        },
+        {
+          "name": "meta.attribute.html",
+          "match": "\\b([a-zA-Z-]+)\\s*(=)\\s*([\"'])([^\"']*?)\\3",
+          "captures": {
+            "1": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.html"
+            },
+            "3": {
+              "name": "punctuation.definition.string.begin.html"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#wxmlExpression"
+                },
+                {
+                  "name": "string.quoted.html"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "wxmlExpression": {
+      "name": "meta.embedded.expression.wxml",
+      "begin": "\\{\\{",
+      "end": "\\}\\}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.template-expression.begin.wxml"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.template-expression.end.wxml"
+        }
+      },
+      "patterns": [
+        {
+          "name": "source.js.embedded.wxml",
+          "match": ".*",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "source.js"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "htmlEntity": {
+      "patterns": [
+        {
+          "name": "constant.character.entity.html",
+          "match": "&([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+);"
+        },
+        {
+          "name": "invalid.illegal.bad-ampersand.html",
+          "match": "&"
+        }
+      ]
+    }
+  }
+}

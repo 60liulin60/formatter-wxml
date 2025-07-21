@@ -1,0 +1,11 @@
+<view class="page">
+  <scroll-view
+    class="scroll-view_H"
+    scroll-x="true"
+    scroll-left="{{scrollLeft}}"
+    bindscrolltolower="loadMore">
+    <view wx:for="{{dataList}}" wx:key="id" class="item">
+      <text>{{item.name}}</text>
+    </view>
+  </scroll-view>
+</view>

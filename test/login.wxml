@@ -1,0 +1,37 @@
+<!-- 授权界面 -->
+<view class="container">
+  <van-notify id="van-notify" />
+  <van-toast id="van-toast" />
+  <view class="auth_title">{{appName}}</view>
+  <view class="auth_des">本应用提供给机构管理人员和医生使用</view>
+  <view class="auth_des">需要您授权登录后才可以继续操作</view>
+  <view class="image-wrap">
+    <image
+      class="auth_image"
+      src="{{NET_IMAGE_PIR_FIX}}login_index_bg_cz_icon.png?time=123"
+      mode="widthFix"
+    />
+  </view>
+  <view class="btn-box-wrap" wx:if="{{agreementCheck}}">
+    <button
+      wx:if="{{needPhoneLogin }}"
+      class="btn"
+      open-type="getPhoneNumber"
+      bind:getphonenumber="getPhoneNumber"
+    >访问当前页面需登录</button>
+    <button wx:if="{{ !needPhoneLogin}}" class="btn" catch:tap="getCodeLoginHandle">登录</button>
+  </view>
+  <view class="btn-box-wrap" wx:if="{{!agreementCheck}}">
+    <button class="btn" catch:tap="agreementNotCheckHandle">{{!needPhoneLogin?'登录':'访问当前页面需登录'}}</button>
+  </view>
+  <view class="create-organ-wrap">
+    <view class="organ-btn-wrap" catch:tap="goCreateOrgan">
+      <van-icon name="plus" color="var(--theme-color)" size="18px" />
+      <view class="label">创建机构</view>
+    </view>
+  </view>
+  <!-- 协议 -->
+  <view class="agreementLink-box-wrap" wx:if="{{agreementList.length>0}}">
+    <agreementLink typeList="{{agreementList}}" bind:agreementCheck="agreementCheck"></agreementLink>
+  </view>
+</view>

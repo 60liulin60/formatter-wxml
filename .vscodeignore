@@ -1,13 +1,26 @@
+# VS Code 相关
 .vscode/**
 .vscode-test/**
+
+# 源代码（已打包到 dist）
 src/**
+out/**
+
+# 配置文件
 .gitignore
 .yarnrc
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
-**/*.map
+webpack.config.js
+
+# TypeScript 文件（已编译）
 **/*.ts
+!src/**/*.d.ts
+
+# 源码映射文件
+**/*.map
+**/*.js.map
 
 # 测试文件和文档
 test/**
@@ -21,11 +34,20 @@ node_modules/**
 package-lock.json
 *.vsix
 
-# 源码映射文件
-**/*.js.map
-
-# 临时文件
+# 临时文件和日志
 .DS_Store
 Thumbs.db
 *.log
 *.tmp
+.nyc_output
+coverage/
+
+# 编辑器和 IDE 文件
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db

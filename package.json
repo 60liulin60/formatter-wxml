@@ -2,7 +2,7 @@
   "name": "wxml-formatter",
   "displayName": "WXML Formatter",
   "description": "A formatter for WeChat Mini Program WXML files",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "publisher": "wxml-formatter-team",
   "icon": "images/logo.png",
   "repository": {
@@ -30,7 +30,7 @@
   "activationEvents": [
     "onLanguage:wxml"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "languages": [
       {
@@ -107,7 +107,22 @@
           "items": {
             "type": "string"
           },
-          "default": ["image", "input", "icon", "video", "audio", "camera", "live-player", "live-pusher", "map", "canvas", "web-view", "ad", "official-account", "open-data"],
+          "default": [
+            "image",
+            "input",
+            "icon",
+            "video",
+            "audio",
+            "camera",
+            "live-player",
+            "live-pusher",
+            "map",
+            "canvas",
+            "web-view",
+            "ad",
+            "official-account",
+            "open-data"
+          ],
           "description": "自闭合标签列表"
         },
         "wxml-formatter.inlineTags": {
@@ -115,7 +130,11 @@
           "items": {
             "type": "string"
           },
-          "default": ["text", "icon", "rich-text"],
+          "default": [
+            "text",
+            "icon",
+            "rich-text"
+          ],
           "description": "内联标签列表（内容不换行）"
         },
         "wxml-formatter.blockTags": {
@@ -124,15 +143,54 @@
             "type": "string"
           },
           "default": [
-            "view", "scroll-view", "swiper", "swiper-item", "movable-area", "movable-view",
-            "cover-view", "cover-image", "page-container", "share-element",
-            "form", "picker", "picker-view", "picker-view-column", "slider", "switch", "textarea",
-            "navigator", "functional-page-navigator", "live-player", "live-pusher",
-            "map", "canvas", "web-view", "ad", "official-account", "open-data",
-            "rich-text", "progress", "button", "checkbox", "radio", "label",
-            "editor", "keyboard-accessory", "match-media", "page-meta", "navigation-bar",
-            "custom-tab-bar", "voip-room", "subscribe", "favorites", "block", "template",
-            "import", "include", "wxs", "slot"
+            "view",
+            "scroll-view",
+            "swiper",
+            "swiper-item",
+            "movable-area",
+            "movable-view",
+            "cover-view",
+            "cover-image",
+            "page-container",
+            "share-element",
+            "form",
+            "picker",
+            "picker-view",
+            "picker-view-column",
+            "slider",
+            "switch",
+            "textarea",
+            "navigator",
+            "functional-page-navigator",
+            "live-player",
+            "live-pusher",
+            "map",
+            "canvas",
+            "web-view",
+            "ad",
+            "official-account",
+            "open-data",
+            "rich-text",
+            "progress",
+            "button",
+            "checkbox",
+            "radio",
+            "label",
+            "editor",
+            "keyboard-accessory",
+            "match-media",
+            "page-meta",
+            "navigation-bar",
+            "custom-tab-bar",
+            "voip-room",
+            "subscribe",
+            "favorites",
+            "block",
+            "template",
+            "import",
+            "include",
+            "wxs",
+            "slot"
           ],
           "description": "块级标签列表"
         }
@@ -140,9 +198,11 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile-web",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "compile-web": "webpack --mode production --devtool hidden-source-map",
+    "watch-web": "webpack --mode development --watch",
     "test": "cd test && node run-tests.js",
     "test:unit": "cd test && node formatter.test.js",
     "test:files": "cd test && node -e \"require('./run-tests').runFileTests()\"",
@@ -156,8 +216,11 @@
     "@types/js-beautify": "^1.14.3",
     "@types/node": "16.x",
     "@types/vscode": "^1.74.0",
+    "ts-loader": "^9.5.2",
     "typescript": "^4.9.4",
-    "vsce": "^2.15.0"
+    "vsce": "^2.15.0",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "js-beautify": "^1.14.7"

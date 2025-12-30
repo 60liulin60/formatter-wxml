@@ -2,5 +2,6 @@
   <swiper indicator-dots="{{true}}" autoplay="{{false}}" interval="{{5000}}">
     <swiper-item>
       <image src="{{item.url}}" mode="aspectFill" />
-    </swiper-item></swiper>
-  </scroll-view>
+    </swiper-item>
+  </swiper>
+</scroll-view>

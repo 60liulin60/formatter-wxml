@@ -176,7 +176,9 @@ class WXMLFormatter {
         for (let j = 0; j < token.attributes.length; j++) {
           const attr = token.attributes[j];
           const isLast = j === token.attributes.length - 1;
-          lines.push(indent.repeat(depth + 1) + `${attr.name}=${attr.value}${isLast ? '>' : ''}`);
+          // 布尔属性（value 为空）只输出属性名
+          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
+          lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? '>' : ''}`);
         }
         depth++;
         continue;
@@ -212,7 +214,9 @@ class WXMLFormatter {
         for (let j = 0; j < token.attributes.length; j++) {
           const attr = token.attributes[j];
           const isLast = j === token.attributes.length - 1;
-          lines.push(indent.repeat(depth + 1) + `${attr.name}=${attr.value}${isLast ? ' />' : ''}`);
+          // 布尔属性（value 为空）只输出属性名
+          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
+          lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? ' />' : ''}`);
         }
         continue;
       }
@@ -233,12 +237,15 @@ class WXMLFormatter {
     
     if (!cleaned) return attrs;
     
-    // 支持普通属性和占位符属性（如 __WXML_DIR_0__="value"）
-    const regex = /([\w-:]+|__WXML_\w+_\d+__)=("[^"]*"|'[^']*')/g;
+    // 支持普通属性、占位符属性和布尔属性
+    // 匹配: name="value" 或 name='value' 或 name (布尔属性)
+    const regex = /([\w-:]+|__WXML_\w+_\d+__)(?:=("[^"]*"|'[^']*'))?/g;
     let match;
 
     while ((match = regex.exec(cleaned)) !== null) {
-      attrs.push({ name: match[1], value: match[2] });
+      const name = match[1];
+      const value = match[2] || ''; // 布尔属性没有值
+      attrs.push({ name, value });
     }
 
     return attrs;
@@ -324,6 +331,18 @@ const testCases = [
     <view>页面2</view>
   </swiper-item>
 </swiper>
+`
+  },
+  {
+    name: '布尔属性保留测试',
+    input: '<input type="text" disabled required placeholder="请输入" maxlength="100" />',
+    description: '测试布尔属性（disabled、required）的保留',
+    expected: `<input
+  type="text"
+  disabled
+  required
+  placeholder="请输入"
+  maxlength="100" />
 `
   }
 ];

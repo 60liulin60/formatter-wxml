@@ -18,11 +18,15 @@
       class="btn"
       open-type="getPhoneNumber"
       bind:getphonenumber="getPhoneNumber"
-    >访问当前页面需登录</button>
+    >
+      访问当前页面需登录
+    </button>
     <button wx:if="{{ !needPhoneLogin}}" class="btn" catch:tap="getCodeLoginHandle">登录</button>
   </view>
   <view class="btn-box-wrap" wx:if="{{!agreementCheck}}">
-    <button class="btn" catch:tap="agreementNotCheckHandle">{{!needPhoneLogin?'登录':'访问当前页面需登录'}}</button>
+    <button class="btn" catch:tap="agreementNotCheckHandle">
+      {{!needPhoneLogin?'登录':'访问当前页面需登录'}}
+    </button>
   </view>
   <view class="create-organ-wrap">
     <view class="organ-btn-wrap" catch:tap="goCreateOrgan">
@@ -32,6 +36,10 @@
   </view>
   <!-- 协议 -->
   <view class="agreementLink-box-wrap" wx:if="{{agreementList.length>0}}">
-    <agreementLink typeList="{{agreementList}}" bind:agreementCheck="agreementCheck"></agreementLink>
+    <agreementLink
+      showBtn
+      typeList="{{agreementList}}"
+      bind:agreementCheck="agreementCheck"
+    ></agreementLink>
   </view>
 </view>

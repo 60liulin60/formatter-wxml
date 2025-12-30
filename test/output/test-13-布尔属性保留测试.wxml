@@ -1,0 +1,6 @@
+<input
+  type="text"
+  disabled
+  required
+  placeholder="请输入"
+  maxlength="100" />

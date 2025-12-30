@@ -191,12 +191,21 @@ class WXMLFormatter {
                 lines.push(indent.repeat(depth) + token.content);
                 continue;
             }
+<<<<<<< HEAD
             // 判断是否需要多行显示：属性数量 >= 3 或 标签长度 > 100
             const shouldWrapAttributes = (token, config) => {
                 if (!token.attributes || token.attributes.length === 0)
                     return false;
                 // 条件1：属性数量 >= 3
                 if (token.attributes.length >= config.wrapAttributes)
+=======
+            // 判断是否需要多行显示：属性数量 > 3 或 标签长度 > 100
+            const shouldWrapAttributes = (token, config) => {
+                if (!token.attributes || token.attributes.length === 0)
+                    return false;
+                // 条件1：属性数量 > 3
+                if (token.attributes.length > config.wrapAttributes)
+>>>>>>> 7049b3d9c6c49d44cdb179dd82c73a90cc3683c8
                     return true;
                 // 条件2：标签原始长度 > 100
                 if (token.originalLength && token.originalLength > 100)
@@ -205,6 +214,7 @@ class WXMLFormatter {
             };
             // 处理多属性开始标签（优先级高于短文本）
             if (token.type === 'open' && shouldWrapAttributes(token, config)) {
+<<<<<<< HEAD
                 // 特殊处理：text 标签的内容和结束标签保持在最后一个属性行
                 if (token.tagName === 'text' &&
                     nextToken?.type === 'text' &&
@@ -243,6 +253,14 @@ class WXMLFormatter {
                 for (let j = 0; j < attrs.length; j++) {
                     const attr = attrs[j];
                     const isLast = j === attrs.length - 1;
+=======
+                lines.push(indent.repeat(depth) + `<${token.tagName}`);
+                const attrs = token.attributes; // 已经在 shouldWrapAttributes 中检查过
+                for (let j = 0; j < attrs.length; j++) {
+                    const attr = attrs[j];
+                    const isLast = j === attrs.length - 1;
+                    // 布尔属性（value 为空）只输出属性名
+>>>>>>> 7049b3d9c6c49d44cdb179dd82c73a90cc3683c8
                     const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
                     lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? '>' : ''}`);
                 }

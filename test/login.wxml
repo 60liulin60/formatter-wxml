@@ -29,11 +29,15 @@
   </view>
   <!-- 协议 -->
   <view class="agreementLink-box-wrap" wx:if="{{agreementList.length>0}}">
+<<<<<<< HEAD
     <agreementLink
       showBtn
       typeList="{{agreementList}}"
       bind:agreementCheck="agreementCheck">
     </agreementLink>
+=======
+    <agreementLink showBtn typeList="{{agreementList}}" bind:agreementCheck="agreementCheck"></agreementLink>
+>>>>>>> 7049b3d9c6c49d44cdb179dd82c73a90cc3683c8
   </view>
   <text
     asd

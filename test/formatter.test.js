@@ -47,14 +47,51 @@ class WXMLFormatter {
 
     const config = this.getConfiguration();
 
+    // 在保护语法之前，记录原始标签长度
+    const originalLengths = this.recordOriginalLengths(text);
+
     let result = this.protectSpecialSyntax(text);
     result = this.normalizeSelfClosingTags(result, config.selfClosingTags);
     const tokens = this.tokenize(result);
+    
+    // 添加原始长度信息
+    this.attachOriginalLengths(tokens, originalLengths, text);
+    
     result = this.buildDocument(tokens, config);
     result = this.restoreSpecialSyntax(result);
     result = this.finalCleanup(result);
 
     return result;
+  }
+
+  recordOriginalLengths(text) {
+    const lengths = new Map();
+    const regex = /<([\w-]+)[^>]*>/g;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      const fullTag = match[0];
+      const tagName = match[1];
+      const key = `${tagName}_${match.index}`;
+      lengths.set(key, fullTag.length);
+    }
+
+    return lengths;
+  }
+
+  attachOriginalLengths(tokens, lengths, originalText) {
+    // 简化版本：直接使用标签名匹配
+    for (const token of tokens) {
+      if ((token.type === 'open' || token.type === 'selfClose') && token.tagName) {
+        // 尝试从 map 中找到匹配的长度
+        for (const [key, length] of lengths.entries()) {
+          if (key.startsWith(token.tagName + '_')) {
+            token.originalLength = length;
+            break;
+          }
+        }
+      }
+    }
   }
 
   protectSpecialSyntax(text) {
@@ -168,10 +205,18 @@ class WXMLFormatter {
         continue;
       }
 
+      // 判断是否需要多行显示：属性数量 > 3 或 标签长度 > 100
+      const shouldWrapAttributes = (token, config) => {
+        if (!token.attributes || token.attributes.length === 0) return false;
+        // 条件1：属性数量 > 3
+        if (token.attributes.length > config.wrapAttributes) return true;
+        // 条件2：标签原始长度 > 100
+        if (token.originalLength && token.originalLength > 100) return true;
+        return false;
+      };
+
       // 处理多属性开始标签（优先级高于短文本）
-      if (token.type === 'open' && 
-          token.attributes && 
-          token.attributes.length > config.wrapAttributes) {
+      if (token.type === 'open' && shouldWrapAttributes(token, config)) {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         for (let j = 0; j < token.attributes.length; j++) {
           const attr = token.attributes[j];
@@ -207,9 +252,7 @@ class WXMLFormatter {
       }
 
       // 多属性自闭合标签
-      if (token.type === 'selfClose' && 
-          token.attributes && 
-          token.attributes.length > config.wrapAttributes) {
+      if (token.type === 'selfClose' && shouldWrapAttributes(token, config)) {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         for (let j = 0; j < token.attributes.length; j++) {
           const attr = token.attributes[j];
@@ -344,6 +387,11 @@ const testCases = [
   placeholder="请输入"
   maxlength="100" />
 `
+  },
+  {
+    name: '长标签换行测试',
+    input: '<view class="very-long-class-name-that-makes-the-tag-exceed-100-characters" data-id="12345" style="color: red;">内容</view>',
+    description: '测试标签长度超过100字符时的换行',
   }
 ];
 

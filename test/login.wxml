@@ -9,33 +9,38 @@
     <image
       class="auth_image"
       src="{{NET_IMAGE_PIR_FIX}}login_index_bg_cz_icon.png?time=123"
-      mode="widthFix"
-    />
+      mode="widthFix" />
   </view>
   <view class="btn-box-wrap" wx:if="{{agreementCheck}}">
-    <button
-      wx:if="{{needPhoneLogin }}"
-      class="btn"
-      open-type="getPhoneNumber"
-      bind:getphonenumber="getPhoneNumber"
-    >
-      访问当前页面需登录
-    </button>
+    <button wx:if="{{needPhoneLogin }}" class="btn" open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">z 访问当前页面需登录</button>
     <button wx:if="{{ !needPhoneLogin}}" class="btn" catch:tap="getCodeLoginHandle">登录</button>
   </view>
   <view class="btn-box-wrap" wx:if="{{!agreementCheck}}">
-    <button class="btn" catch:tap="agreementNotCheckHandle">
-      {{!needPhoneLogin?'登录':'访问当前页面需登录'}}
-    </button>
+    <button class="btn" catch:tap="agreementNotCheckHandle">{{!needPhoneLogin?'登录':'访问当前页面需登录'}}</button>
   </view>
   <view class="create-organ-wrap">
     <view class="organ-btn-wrap" catch:tap="goCreateOrgan">
-      <van-icon name="plus" color="var(--theme-color)" size="18px" />
+      <van-icon
+        name="plus"
+        color="var(--theme-color)"
+        size="18px" />
       <view class="label">创建机构</view>
     </view>
   </view>
   <!-- 协议 -->
   <view class="agreementLink-box-wrap" wx:if="{{agreementList.length>0}}">
+<<<<<<< HEAD
+    <agreementLink
+      showBtn
+      typeList="{{agreementList}}"
+      bind:agreementCheck="agreementCheck">
+    </agreementLink>
+=======
     <agreementLink showBtn typeList="{{agreementList}}" bind:agreementCheck="agreementCheck"></agreementLink>
+>>>>>>> 7049b3d9c6c49d44cdb179dd82c73a90cc3683c8
   </view>
+  <text
+    asd
+    asdasd
+    asd>asdddddddddddddddddddddddddddddddddddddd asdddddddddd</text>
 </view>

@@ -3,9 +3,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const formatter_1 = require("./formatter");
+const WXML_SELECTOR = { scheme: 'file', language: 'wxml' };
+/**
+ * Creates a full document range
+ */
+function getFullDocumentRange(document) {
+    return new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length));
+}
+/**
+ * Formats text and handles errors
+ */
+function formatText(text, showSuccessMessage = false) {
+    const formatter = new formatter_1.WXMLFormatter();
+    try {
+        const formattedText = formatter.format(text);
+        if (showSuccessMessage) {
+            vscode.window.showInformationMessage('WXML file formatted successfully!');
+        }
+        return formattedText;
+    }
+    catch (error) {
+        vscode.window.showErrorMessage(`Formatting failed: ${error}`);
+        return null;
+    }
+}
 function activate(context) {
     console.log('WXML Formatter extension is now active!');
-    // 注册格式化命令
+    // Register format command
     const formatCommand = vscode.commands.registerCommand('wxml-formatter.format', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -16,53 +40,32 @@ function activate(context) {
             vscode.window.showErrorMessage('This command only works with WXML files');
             return;
         }
-        const formatter = new formatter_1.WXMLFormatter();
         const document = editor.document;
-        const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length));
-        try {
-            const formattedText = formatter.format(document.getText());
+        const fullRange = getFullDocumentRange(document);
+        const formattedText = formatText(document.getText(), true);
+        if (formattedText) {
             editor.edit(editBuilder => {
                 editBuilder.replace(fullRange, formattedText);
             });
-            vscode.window.showInformationMessage('WXML file formatted successfully!');
-        }
-        catch (error) {
-            vscode.window.showErrorMessage(`Formatting failed: ${error}`);
         }
     });
-    // 注册文档格式化提供程序
-    const documentFormattingProvider = vscode.languages.registerDocumentFormattingEditProvider({ scheme: 'file', language: 'wxml' }, {
+    // Register document formatting provider
+    const documentFormattingProvider = vscode.languages.registerDocumentFormattingEditProvider(WXML_SELECTOR, {
         provideDocumentFormattingEdits(document) {
-            const formatter = new formatter_1.WXMLFormatter();
-            const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length));
-            try {
-                const formattedText = formatter.format(document.getText());
-                return [vscode.TextEdit.replace(fullRange, formattedText)];
-            }
-            catch (error) {
-                vscode.window.showErrorMessage(`Formatting failed: ${error}`);
-                return [];
-            }
+            const fullRange = getFullDocumentRange(document);
+            const formattedText = formatText(document.getText());
+            return formattedText ? [vscode.TextEdit.replace(fullRange, formattedText)] : [];
         }
     });
-    // 注册范围格式化提供程序
-    const rangeFormattingProvider = vscode.languages.registerDocumentRangeFormattingEditProvider({ scheme: 'file', language: 'wxml' }, {
+    // Register range formatting provider
+    const rangeFormattingProvider = vscode.languages.registerDocumentRangeFormattingEditProvider(WXML_SELECTOR, {
         provideDocumentRangeFormattingEdits(document, range) {
-            const formatter = new formatter_1.WXMLFormatter();
             const text = document.getText(range);
-            try {
-                const formattedText = formatter.format(text);
-                return [vscode.TextEdit.replace(range, formattedText)];
-            }
-            catch (error) {
-                vscode.window.showErrorMessage(`Formatting failed: ${error}`);
-                return [];
-            }
+            const formattedText = formatText(text);
+            return formattedText ? [vscode.TextEdit.replace(range, formattedText)] : [];
         }
     });
-    context.subscriptions.push(formatCommand);
-    context.subscriptions.push(documentFormattingProvider);
-    context.subscriptions.push(rangeFormattingProvider);
+    context.subscriptions.push(formatCommand, documentFormattingProvider, rangeFormattingProvider);
 }
 exports.activate = activate;
 function deactivate() {

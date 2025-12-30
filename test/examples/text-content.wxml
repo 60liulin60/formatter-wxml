@@ -1,0 +1,5 @@
+<text class="asda" tabindex assdassd asd>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>
+
+<text class="asda" tabindex assdassd asd>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>
+
+<view class="container" data-id="123" bind:tap="handleTap">Some text content here</view>

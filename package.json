@@ -45,13 +45,6 @@
         "configuration": "./language-configuration.json"
       }
     ],
-    "grammars": [
-      {
-        "language": "wxml",
-        "scopeName": "text.html.wxml",
-        "path": "./syntaxes/wxml.tmLanguage.json"
-      }
-    ],
     "commands": [
       {
         "command": "wxml-formatter.format",

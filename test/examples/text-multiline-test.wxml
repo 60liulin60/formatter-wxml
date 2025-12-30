@@ -1,0 +1,16 @@
+<!-- 测试 text 标签多属性换行 -->
+
+<!-- 测试1: 3个属性 -->
+<text class="title" data-id="123" bind:tap="handleTap">这是文本内容</text>
+
+<!-- 测试2: 4个属性 -->
+<text class="asda" tabindex assdassd asd>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>
+
+<!-- 测试3: 长内容 -->
+<text class="a" data-id="b" style="color:red">这是一段很长很长很长很长很长很长的文本内容</text>
+
+<!-- 对比: view 标签 3个属性 -->
+<view class="container" data-id="123" bind:tap="handleTap">这是内容</view>
+
+<!-- 对比: button 标签 4个属性 -->
+<button class="btn" data-id="123" bind:tap="handleTap" disabled>按钮文本</button>

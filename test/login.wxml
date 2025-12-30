@@ -36,10 +36,6 @@
   </view>
   <!-- 协议 -->
   <view class="agreementLink-box-wrap" wx:if="{{agreementList.length>0}}">
-    <agreementLink
-      showBtn
-      typeList="{{agreementList}}"
-      bind:agreementCheck="agreementCheck"
-    ></agreementLink>
+    <agreementLink showBtn typeList="{{agreementList}}" bind:agreementCheck="agreementCheck"></agreementLink>
   </view>
 </view>

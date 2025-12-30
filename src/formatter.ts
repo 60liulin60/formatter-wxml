@@ -22,6 +22,7 @@ interface Token {
   content: string;
   tagName?: string;
   attributes?: ParsedAttribute[];
+  originalLength?: number; // 保存原始长度（保护语法之前）
 }
 
 // 占位符常量
@@ -68,6 +69,9 @@ export class WXMLFormatter {
 
       const config = this.getConfiguration();
 
+      // 在保护语法之前，记录原始标签长度
+      const originalLengths = this.recordOriginalLengths(text);
+
       // 1. 保护特殊语法
       let result = this.protectSpecialSyntax(text);
 
@@ -77,18 +81,56 @@ export class WXMLFormatter {
       // 3. 解析为token
       const tokens = this.tokenize(result);
 
-      // 4. 构建格式化文档
+      // 4. 添加原始长度信息到 token
+      this.attachOriginalLengths(tokens, originalLengths);
+
+      // 5. 构建格式化文档
       result = this.buildDocument(tokens, config);
 
-      // 5. 恢复特殊语法
+      // 6. 恢复特殊语法
       result = this.restoreSpecialSyntax(result);
 
-      // 6. 最终清理
+      // 7. 最终清理
       result = this.finalCleanup(result);
 
       return result;
     } catch (error) {
       throw new Error(`Failed to format WXML: ${error}`);
+    }
+  }
+
+  /**
+   * 记录原始标签长度（保护语法之前）
+   */
+  private recordOriginalLengths(text: string): Map<string, number> {
+    const lengths = new Map<string, number>();
+    const regex = /<([\w-]+)[^>]*>/g;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      const fullTag = match[0];
+      const tagName = match[1];
+      // 使用标签名+位置作为key
+      const key = `${tagName}_${match.index}`;
+      lengths.set(key, fullTag.length);
+    }
+
+    return lengths;
+  }
+
+  /**
+   * 将原始长度信息附加到 token
+   */
+  private attachOriginalLengths(tokens: Token[], lengths: Map<string, number>): void {
+    let position = 0;
+    for (const token of tokens) {
+      if ((token.type === 'open' || token.type === 'selfClose') && token.tagName) {
+        const key = `${token.tagName}_${position}`;
+        if (lengths.has(key)) {
+          token.originalLength = lengths.get(key);
+        }
+      }
+      position += token.content.length;
     }
   }
 
@@ -208,14 +250,23 @@ export class WXMLFormatter {
         continue;
       }
 
+      // 判断是否需要多行显示：属性数量 > 3 或 标签长度 > 100
+      const shouldWrapAttributes = (token: Token, config: FormatterConfig): boolean => {
+        if (!token.attributes || token.attributes.length === 0) return false;
+        // 条件1：属性数量 > 3
+        if (token.attributes.length > config.wrapAttributes) return true;
+        // 条件2：标签原始长度 > 100
+        if (token.originalLength && token.originalLength > 100) return true;
+        return false;
+      };
+
       // 处理多属性开始标签（优先级高于短文本）
-      if (token.type === 'open' && 
-          token.attributes && 
-          token.attributes.length > config.wrapAttributes) {
+      if (token.type === 'open' && shouldWrapAttributes(token, config)) {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        for (let j = 0; j < token.attributes.length; j++) {
-          const attr = token.attributes[j];
-          const isLast = j === token.attributes.length - 1;
+        const attrs = token.attributes!; // 已经在 shouldWrapAttributes 中检查过
+        for (let j = 0; j < attrs.length; j++) {
+          const attr = attrs[j];
+          const isLast = j === attrs.length - 1;
           // 布尔属性（value 为空）只输出属性名
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
           lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? '>' : ''}`);
@@ -247,13 +298,12 @@ export class WXMLFormatter {
       }
 
       // 处理多属性自闭合标签
-      if (token.type === 'selfClose' && 
-          token.attributes && 
-          token.attributes.length > config.wrapAttributes) {
+      if (token.type === 'selfClose' && shouldWrapAttributes(token, config)) {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        for (let j = 0; j < token.attributes.length; j++) {
-          const attr = token.attributes[j];
-          const isLast = j === token.attributes.length - 1;
+        const attrs = token.attributes!; // 已经在 shouldWrapAttributes 中检查过
+        for (let j = 0; j < attrs.length; j++) {
+          const attr = attrs[j];
+          const isLast = j === attrs.length - 1;
           // 布尔属性（value 为空）只输出属性名
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
           lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? ' />' : ''}`);

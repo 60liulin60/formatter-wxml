@@ -82,6 +82,8 @@
 ### 高级配置说明
 
 - `wrapAttributes`: 超过多少个属性时换行，默认为3
+  - 当属性数量 > 3 时，自动换行
+  - 或当标签长度 > 100 字符时，也会自动换行
 - `alignAttributes`: 是否对齐属性，默认为true
 - `sortAttributes`: 是否按优先级排序属性，默认为false
 
@@ -99,6 +101,7 @@
 - ✅ 事件绑定 (bind:, catch:, capture-bind:, capture-catch:)
 - ✅ 双花括号表达式 {{}}
 - ✅ 模板语法 (template, import, include)
+- ✅ 布尔属性 (disabled, required, showBtn 等)
 
 ## 示例
 
@@ -148,15 +151,61 @@
 **格式化后：**
 
 ```xml
-<view class="container"><text wx:if="{{user.isVip}}">VIP用户</text><text wx:elif="{{user.isActive}}">活跃用户</text><text wx:else>普通用户</text>
-  <view wx:if="{{showDetails}}"><text>详细信息：{{user.details}}</text><button wx:if="{{canEdit}}" bind:tap="onEdit">编辑</button>
+<view class="container">
+  <text wx:if="{{user.isVip}}">VIP用户</text>
+  <text wx:elif="{{user.isActive}}">活跃用户</text>
+  <text wx:else>普通用户</text>
+  <view wx:if="{{showDetails}}">
+    <text>详细信息：{{user.details}}</text>
+    <button wx:if="{{canEdit}}" bind:tap="onEdit">编辑</button>
   </view>
   <image src="{{user.avatar}}" class="avatar" mode="aspectFit" bind:tap="onImageTap" />
-  <button wx:if="{{item.canEdit}}"
+  <button
+    wx:if="{{item.canEdit}}"
     bind:tap="onEdit"
     data-id="{{item.id}}"
     class="edit-btn"
-    disabled="{{loading}}">编辑按钮</button>
+    disabled="{{loading}}">
+    编辑按钮
+  </button>
+</view>
+```
+
+### 布尔属性示例
+
+**格式化前：**
+
+```xml
+<input type="text" disabled required placeholder="请输入" maxlength="100" />
+```
+
+**格式化后：**
+
+```xml
+<input
+  type="text"
+  disabled
+  required
+  placeholder="请输入"
+  maxlength="100" />
+```
+
+### 长标签换行示例
+
+**格式化前：**
+
+```xml
+<view class="very-long-class-name-that-makes-the-tag-exceed-100-characters" data-id="12345" style="color: red;">内容</view>
+```
+
+**格式化后：**
+
+```xml
+<view
+  class="very-long-class-name-that-makes-the-tag-exceed-100-characters"
+  data-id="12345"
+  style="color: red;">
+  内容
 </view>
 ```
 
@@ -164,7 +213,8 @@
 
 - ✅ `<text>` 标签内容保持在同一行
 - ✅ `<image>` 标签自动转换为自闭合格式
-- ✅ 属性超过3个时自动换行
+- ✅ 属性超过 3 个或标签长度超过 100 字符时自动换行
+- ✅ 布尔属性（如 `disabled`、`showBtn`）正确保留
 - ✅ 清晰的层级缩进结构
 - ✅ 正确处理带连字符的标签（如 `scroll-view`、`swiper-item` 等）
 
@@ -178,7 +228,9 @@
 - 🐛 **修复**: 短文本标签（如 `<view>页面1</view>`）保持同行
 - ✨ **改进**: 消除重复代码，提升可维护性
 - ✨ **改进**: 优化属性解析，支持占位符格式
-- 📝 **测试**: 同步更新测试文件，所有测试通过
+- ✨ **新增**: 支持布尔属性（disabled、required、showBtn 等）
+- ✨ **新增**: 换行逻辑优化 - 属性数量 > 3 或标签长度 > 100 时换行
+- 📝 **测试**: 同步更新测试文件，14 个测试用例全部通过
 
 ### v1.2.2 (2025-07-21) - 重要修复版本
 

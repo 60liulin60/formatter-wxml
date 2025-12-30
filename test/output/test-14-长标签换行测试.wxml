@@ -1,0 +1,6 @@
+<view
+  class="very-long-class-name-that-makes-the-tag-exceed-100-characters"
+  data-id="12345"
+  style="color: red;">
+  内容
+</view>

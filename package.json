@@ -67,7 +67,8 @@
         "extensions": [
           ".wxml"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "filenames": []
       }
     ],
     "commands": [
@@ -80,12 +81,19 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceExtname == .wxml",
+          "when": "resourceLangId == wxml",
           "command": "wxml-formatter.format",
           "group": "1_modification"
         }
       ]
     },
+    "grammars": [
+      {
+        "language": "wxml",
+        "scopeName": "text.wxml",
+        "path": "./syntaxes/wxml.tmLanguage.json"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "WXML Formatter",

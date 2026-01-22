@@ -217,6 +217,7 @@ class WXMLFormatter {
 
       // 处理多属性开始标签（优先级高于短文本）
       if (token.type === 'open' && shouldWrapAttributes(token, config)) {
+        // 多行显示属性
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         for (let j = 0; j < token.attributes.length; j++) {
           const attr = token.attributes[j];

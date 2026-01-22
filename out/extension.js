@@ -52,6 +52,10 @@ function activate(context) {
     // Register document formatting provider
     const documentFormattingProvider = vscode.languages.registerDocumentFormattingEditProvider(WXML_SELECTOR, {
         provideDocumentFormattingEdits(document) {
+            // Double check: only format .wxml files
+            if (document.languageId !== 'wxml' && !document.fileName.endsWith('.wxml')) {
+                return [];
+            }
             const fullRange = getFullDocumentRange(document);
             const formattedText = formatText(document.getText());
             return formattedText ? [vscode.TextEdit.replace(fullRange, formattedText)] : [];
@@ -60,6 +64,10 @@ function activate(context) {
     // Register range formatting provider
     const rangeFormattingProvider = vscode.languages.registerDocumentRangeFormattingEditProvider(WXML_SELECTOR, {
         provideDocumentRangeFormattingEdits(document, range) {
+            // Double check: only format .wxml files
+            if (document.languageId !== 'wxml' && !document.fileName.endsWith('.wxml')) {
+                return [];
+            }
             const text = document.getText(range);
             const formattedText = formatText(text);
             return formattedText ? [vscode.TextEdit.replace(range, formattedText)] : [];

@@ -205,39 +205,7 @@ class WXMLFormatter {
             };
             // 处理多属性开始标签（优先级高于短文本）
             if (token.type === 'open' && shouldWrapAttributes(token, config)) {
-                // 特殊处理：text 标签的内容和结束标签保持在最后一个属性行
-                if (token.tagName === 'text' &&
-                    nextToken?.type === 'text' &&
-                    nextNextToken?.type === 'close' &&
-                    nextNextToken.tagName === 'text') {
-                    lines.push(indent.repeat(depth) + `<text`);
-                    const attrs = token.attributes;
-                    for (let j = 0; j < attrs.length; j++) {
-                        const attr = attrs[j];
-                        const isLast = j === attrs.length - 1;
-                        const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-                        if (isLast) {
-                            // 最后一个属性：将 > 文本内容 </text> 都放在同一行
-                            lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken.content}</text>`);
-                        }
-                        else {
-                            lines.push(indent.repeat(depth + 1) + attrStr);
-                        }
-                    }
-                    i += 2; // 跳过文本和结束标签
-                    continue;
-                }
-                // 检查是否是简短的内联内容：<tag attrs>text</tag>
-                if (nextToken?.type === 'text' &&
-                    nextNextToken?.type === 'close' &&
-                    nextNextToken.tagName === token.tagName) {
-                    // 保持整行：<tag attrs>text</tag>
-                    const attrsStr = token.attributes.map(attr => attr.value ? `${attr.name}=${attr.value}` : attr.name).join(' ');
-                    lines.push(indent.repeat(depth) + `<${token.tagName} ${attrsStr}>${nextToken.content}</${token.tagName}>`);
-                    i += 2; // 跳过文本和结束标签
-                    continue;
-                }
-                // 否则，多行显示属性
+                // 多行显示属性
                 lines.push(indent.repeat(depth) + `<${token.tagName}`);
                 const attrs = token.attributes;
                 for (let j = 0; j < attrs.length; j++) {

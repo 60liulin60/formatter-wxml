@@ -1,10 +1,18 @@
 <view class="event-demo">
   <button bind:tap="onTap" data-id="{{item.id}}">普通点击</button>
-  <button catch:tap="onCatchTap"
-    class="catch-btn">阻止冒泡点击</button>
-  <view capture-bind:touchstart="onCaptureStart" capture-catch:touchend="onCaptureEnd" class="capture-area">
+  <button catch:tap="onCatchTap" class="catch-btn">阻止冒泡点击</button>
+  <view
+    capture-bind:touchstart="onCaptureStart"
+    capture-catch:touchend="onCaptureEnd"
+    class="capture-area"
+  >
     <text>捕获事件区域</text>
-    <button bind:longpress="onLongPress" bind:touchstart="onTouchStart"
-      bind:touchend="onTouchEnd">多事件按钮</button>
+    <button
+      bind:longpress="onLongPress"
+      bind:touchstart="onTouchStart"
+      bind:touchend="onTouchEnd"
+    >
+      多事件按钮
+    </button>
   </view>
 </view>

@@ -1,8 +1,7 @@
 <view class="expressions">
   <text>用户名：{{user.name || '未知用户'}}</text>
   <text>年龄：{{user.age > 18 ? '成年' : '未成年'}}</text>
-  <view class="{{isActive ? 'active' : 'inactive'}} {{user.vip ? 'vip' : ''}}">状态显示
-  </view>
+  <view class="{{isActive ? 'active' : 'inactive'}} {{user.vip ? 'vip' : ''}}">状态显示</view>
   <text>计算结果：{{(price * quantity * (1 - discount)).toFixed(2)}}</text>
   <image src="{{baseUrl + '/images/' + user.avatar}}" class="avatar" />
 </view>

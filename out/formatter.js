@@ -138,21 +138,32 @@ class WXMLFormatter {
     tokenize(text) {
         const tokens = [];
         const cleaned = text.replace(/\s+/g, ' ').trim();
-        const regex = /<!\-\-[\s\S]*?\-\->|<\/[\w-]+>|<[\w-]+[^>]*\/>|<[\w-]+[^>]*>|[^<]+/g;
+        const regex = /<!\-\-[\s\S]*?\-\->|<\/[\w-]+\s*>|<[\w-]+[^>]*\/\s*>|<[\w-]+[^>]*\s*>|[^<]+|</g;
         let match;
         while ((match = regex.exec(cleaned)) !== null) {
-            const content = match[0].trim();
-            if (!content)
+            const raw = match[0].trim();
+            if (!raw)
                 continue;
+            const content = raw.startsWith('<')
+                ? raw.replace(/\/\s*>$/, '/>').replace(/\s+>$/, '>')
+                : raw;
             if (content.startsWith('<!--')) {
                 tokens.push({ type: 'comment', content });
+            }
+            else if (content === '<') {
+                tokens.push({ type: 'text', content });
             }
             else if (content.startsWith('</')) {
                 const tagName = content.match(/<\/([\w-]+)/)?.[1] || '';
                 tokens.push({ type: 'close', content, tagName });
             }
-            else if (content.endsWith('/>')) {
-                const tagName = content.match(/<([\w-]+)/)?.[1] || '';
+            else if (/\/>$/.test(content)) {
+                const tagNameMatch = content.match(/<([\w-]+)/);
+                if (!tagNameMatch) {
+                    tokens.push({ type: 'text', content });
+                    continue;
+                }
+                const tagName = tagNameMatch[1] || '';
                 const attrStr = content.slice(tagName.length + 1, -2);
                 tokens.push({
                     type: 'selfClose',
@@ -162,7 +173,12 @@ class WXMLFormatter {
                 });
             }
             else if (content.startsWith('<')) {
-                const tagName = content.match(/<([\w-]+)/)?.[1] || '';
+                const tagNameMatch = content.match(/<([\w-]+)/);
+                if (!tagNameMatch) {
+                    tokens.push({ type: 'text', content });
+                    continue;
+                }
+                const tagName = tagNameMatch[1] || '';
                 const attrStr = content.slice(tagName.length + 1, -1);
                 tokens.push({
                     type: 'open',
@@ -203,13 +219,29 @@ class WXMLFormatter {
                     return true;
                 return false;
             };
+            if (token.type === 'open' &&
+                token.tagName === 'text' &&
+                shouldWrapAttributes(token, config) &&
+                nextToken?.type === 'text' &&
+                nextNextToken?.type === 'close' &&
+                nextNextToken.tagName === token.tagName) {
+                lines.push(indent.repeat(depth) + `<${token.tagName}`);
+                const attrs = token.attributes ?? [];
+                for (let j = 0; j < attrs.length; j++) {
+                    const attr = attrs[j];
+                    const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
+                    lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+                }
+                lines.push(indent.repeat(depth) + `>${nextToken.content}${nextNextToken.content}`);
+                i += 2;
+                continue;
+            }
             // 处理多属性开始标签（优先级高于短文本）
             if (token.type === 'open' && shouldWrapAttributes(token, config)) {
-                const shouldInlineAfterWrapped =
-                    nextToken?.type === 'text' &&
-                        nextNextToken?.type === 'close' &&
-                        nextNextToken.tagName === token.tagName &&
-                        config.inlineTags.includes(token.tagName || '');
+                const shouldInlineAfterWrapped = nextToken?.type === 'text' &&
+                    nextNextToken?.type === 'close' &&
+                    nextNextToken.tagName === token.tagName &&
+                    config.inlineTags.includes(token.tagName || '');
                 // 多行显示属性
                 lines.push(indent.repeat(depth) + `<${token.tagName}`);
                 const attrs = token.attributes;
@@ -264,9 +296,13 @@ class WXMLFormatter {
                 for (let j = 0; j < attrs.length; j++) {
                     const attr = attrs[j];
                     const isLast = j === attrs.length - 1;
-                    // 布尔属性（value 为空）只输出属性名
                     const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-                    lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? ' />' : ''}`);
+                    if (isLast) {
+                        lines.push(indent.repeat(depth + 1) + `${attrStr} />`);
+                    }
+                    else {
+                        lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+                    }
                 }
                 continue;
             }

@@ -276,6 +276,26 @@ export class WXMLFormatter {
         return false;
       };
 
+      if (
+        token.type === 'open' &&
+        token.tagName === 'text' &&
+        shouldWrapAttributes(token, config) &&
+        nextToken?.type === 'text' &&
+        nextNextToken?.type === 'close' &&
+        nextNextToken.tagName === token.tagName
+      ) {
+        lines.push(indent.repeat(depth) + `<${token.tagName}`);
+        const attrs = token.attributes ?? [];
+        for (let j = 0; j < attrs.length; j++) {
+          const attr = attrs[j]!;
+          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
+          lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+        }
+        lines.push(indent.repeat(depth) + `>${nextToken.content}${nextNextToken.content}`);
+        i += 2;
+        continue;
+      }
+
       // 处理多属性开始标签（优先级高于短文本）
       if (token.type === 'open' && shouldWrapAttributes(token, config)) {
         const shouldInlineAfterWrapped =
@@ -288,7 +308,7 @@ export class WXMLFormatter {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         const attrs = token.attributes!;
         for (let j = 0; j < attrs.length; j++) {
-          const attr = attrs[j];
+          const attr = attrs[j]!;
           const isLast = j === attrs.length - 1;
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
           if (isLast) {
@@ -337,11 +357,14 @@ export class WXMLFormatter {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         const attrs = token.attributes!; // 已经在 shouldWrapAttributes 中检查过
         for (let j = 0; j < attrs.length; j++) {
-          const attr = attrs[j];
+          const attr = attrs[j]!;
           const isLast = j === attrs.length - 1;
-          // 布尔属性（value 为空）只输出属性名
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? ' />' : ''}`);
+          if (isLast) {
+            lines.push(indent.repeat(depth + 1) + `${attrStr} />`);
+          } else {
+            lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+          }
         }
         continue;
       }

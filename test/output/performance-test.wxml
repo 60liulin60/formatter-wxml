@@ -4,17 +4,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -23,17 +33,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -42,17 +62,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -61,17 +91,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -80,17 +120,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -99,17 +149,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -118,17 +178,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -137,17 +207,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -156,17 +236,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -175,17 +265,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -194,17 +294,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -213,17 +323,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -232,17 +352,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -251,17 +381,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -270,17 +410,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -289,17 +439,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -308,17 +468,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -327,17 +497,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -346,17 +526,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -365,17 +555,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -384,17 +584,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -403,17 +613,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -422,17 +642,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -441,17 +671,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -460,17 +700,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -479,17 +729,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -498,17 +758,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -517,17 +787,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -536,17 +816,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -555,17 +845,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -574,17 +874,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -593,17 +903,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -612,17 +932,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -631,17 +961,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -650,17 +990,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -669,17 +1019,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -688,17 +1048,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -707,17 +1077,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -726,17 +1106,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -745,17 +1135,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -764,17 +1164,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -783,17 +1193,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -802,17 +1222,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -821,17 +1251,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -840,17 +1280,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -859,17 +1309,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -878,17 +1338,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -897,17 +1367,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -916,17 +1396,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -935,17 +1425,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -954,17 +1454,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -973,17 +1483,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -992,17 +1512,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1011,17 +1541,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1030,17 +1570,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1049,17 +1599,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1068,17 +1628,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1087,17 +1657,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1106,17 +1686,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1125,17 +1715,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1144,17 +1744,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1163,17 +1773,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1182,17 +1802,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1201,17 +1831,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1220,17 +1860,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1239,17 +1889,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1258,17 +1918,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1277,17 +1947,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1296,17 +1976,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1315,17 +2005,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1334,17 +2034,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1353,17 +2063,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1372,17 +2092,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1391,17 +2121,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1410,17 +2150,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1429,17 +2179,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1448,17 +2208,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1467,17 +2237,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1486,17 +2266,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1505,17 +2295,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1524,17 +2324,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1543,17 +2353,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1562,17 +2382,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1581,17 +2411,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1600,17 +2440,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1619,17 +2469,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1638,17 +2498,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1657,17 +2527,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1676,17 +2556,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1695,17 +2585,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1714,17 +2614,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1733,17 +2643,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1752,17 +2672,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1771,17 +2701,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1790,17 +2730,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1809,17 +2759,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1828,17 +2788,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1847,17 +2817,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1866,17 +2846,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>
@@ -1885,17 +2875,27 @@
     wx:for="{{items}}"
     wx:key="id"
     wx:for-item="item"
-    wx:for-index="index">
+    wx:for-index="index"
+  >
     <view class="header">
       <text class="title">{{item.title}}</text>
       <text wx:if="{{item.isNew}}" class="tag">新</text>
     </view>
     <view class="content">
       <text>{{item.description}}</text>
-      <image wx:if="{{item.image}}" src="{{item.image}}" bind:tap="onImageTap" />
+      <image
+        wx:if="{{item.image}}"
+        src="{{item.image}}"
+        bind:tap="onImageTap" />
     </view>
     <view class="actions">
-      <button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}">编辑</button>
+      <button
+        wx:if="{{item.canEdit}}"
+        bind:tap="onEdit"
+        data-id="{{item.id}}"
+      >
+        编辑
+      </button>
       <button bind:tap="onDelete" data-id="{{item.id}}">删除</button>
     </view>
   </view>

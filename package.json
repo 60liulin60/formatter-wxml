@@ -2,7 +2,7 @@
   "name": "wxml-formatter",
   "displayName": "WXML Formatter",
   "description": "A formatter for WeChat Mini Program WXML files",
-  "version": "1.3.1",
+  "version": "1.3.3",
   "publisher": "wxml-formatter-team",
   "icon": "images/logo.png",
   "scripts": {
@@ -53,24 +53,11 @@
     "format"
   ],
   "activationEvents": [
-    "onLanguage:wxml"
+    "onCommand:wxml-formatter.format",
+    "workspaceContains:**/*.wxml"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "languages": [
-      {
-        "id": "wxml",
-        "aliases": [
-          "WXML",
-          "wxml"
-        ],
-        "extensions": [
-          ".wxml"
-        ],
-        "configuration": "./language-configuration.json",
-        "filenames": []
-      }
-    ],
     "commands": [
       {
         "command": "wxml-formatter.format",
@@ -81,19 +68,12 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceLangId == wxml",
+          "when": "resourceExtname == .wxml",
           "command": "wxml-formatter.format",
           "group": "1_modification"
         }
       ]
     },
-    "grammars": [
-      {
-        "language": "wxml",
-        "scopeName": "text.wxml",
-        "path": "./syntaxes/wxml.tmLanguage.json"
-      }
-    ],
     "configuration": {
       "type": "object",
       "title": "WXML Formatter",

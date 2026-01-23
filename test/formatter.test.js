@@ -221,15 +221,34 @@ class WXMLFormatter {
         continue;
       }
 
-      // 判断是否需要多行显示：属性数量 > 3 或 标签长度 > 100
+      // 判断是否需要多行显示：属性数量 >= 3 或 标签长度 > 100
       const shouldWrapAttributes = (token, config) => {
         if (!token.attributes || token.attributes.length === 0) return false;
-        // 条件1：属性数量 > 3
-        if (token.attributes.length > config.wrapAttributes) return true;
+        // 条件1：属性数量 >= 3
+        if (token.attributes.length >= config.wrapAttributes) return true;
         // 条件2：标签原始长度 > 100
         if (token.originalLength && token.originalLength > 100) return true;
         return false;
       };
+
+      if (
+        token.type === 'open' &&
+        token.tagName === 'text' &&
+        shouldWrapAttributes(token, config) &&
+        nextToken?.type === 'text' &&
+        nextNextToken?.type === 'close' &&
+        nextNextToken.tagName === token.tagName
+      ) {
+        lines.push(indent.repeat(depth) + `<${token.tagName}`);
+        for (let j = 0; j < token.attributes.length; j++) {
+          const attr = token.attributes[j];
+          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
+          lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+        }
+        lines.push(indent.repeat(depth) + `>${nextToken.content}${nextNextToken.content}`);
+        i += 2;
+        continue;
+      }
 
       // 处理多属性开始标签（优先级高于短文本）
       if (token.type === 'open' && shouldWrapAttributes(token, config)) {
@@ -450,7 +469,8 @@ const testCases = [
     description: '测试开始标签的 > 与属性不同行时，内联 text 标签仍保持同一行',
     expected: `<text
   class="tip-wrap cashback-wrap"
-  wx:if="{{item.incomeSource && item.incomeSource === 'platform_cashback'}}">限时奖励</text>
+  wx:if="{{item.incomeSource && item.incomeSource === 'platform_cashback'}}"
+>限时奖励</text>
 `
   },
   {
@@ -461,7 +481,8 @@ const testCases = [
   class="title"
   data-id="123"
   bind:tap="handleTap"
-  style="color:red">这是文本内容</text>
+  style="color:red"
+>这是文本内容</text>
 `
   },
   {
@@ -472,7 +493,15 @@ const testCases = [
   class="asda"
   tabindex
   assdassd
-  asd>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>
+  asd
+>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>
+`
+  },
+  {
+    name: 'text 标签格式化问题 - 小于阈值保持单行',
+    input: '<text class="tip-wrap cashback-wrap">限时奖励</text>',
+    description: '测试 text 标签属性少于3且标签长度不超过100时保持单行',
+    expected: `<text class="tip-wrap cashback-wrap">限时奖励</text>
 `
   }
 ];

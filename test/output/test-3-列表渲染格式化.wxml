@@ -2,6 +2,7 @@
   wx:for="{{list}}"
   wx:key="id"
   wx:for-item="item"
-  wx:for-index="index">
+  wx:for-index="index"
+>
   <text>{{item.name}}</text>
 </view>

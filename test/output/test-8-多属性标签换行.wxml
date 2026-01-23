@@ -4,6 +4,7 @@
   bind:tap="onTap"
   data-id="{{item.id}}"
   data-type="{{item.type}}"
-  disabled="{{loading}}">
+  disabled="{{loading}}"
+>
   提交
 </button>

@@ -1,0 +1,4 @@
+<text
+  class="tip-wrap cashback-wrap"
+  wx:if="{{item.incomeSource && item.incomeSource === 'platform_cashback'}}"
+>限时奖励</text>

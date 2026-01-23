@@ -292,10 +292,11 @@ export class WXMLFormatter {
           const isLast = j === attrs.length - 1;
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
           if (isLast) {
-            const suffix = shouldInlineAfterWrapped
-              ? `>${nextToken.content}${nextNextToken.content}`
-              : '>';
-            lines.push(indent.repeat(depth + 1) + `${attrStr}${suffix}`);
+            if (shouldInlineAfterWrapped) {
+              lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken.content}${nextNextToken.content}`);
+            } else {
+              lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+            }
           } else {
             lines.push(indent.repeat(depth + 1) + `${attrStr}`);
           }
@@ -304,6 +305,7 @@ export class WXMLFormatter {
           i += 2;
           continue;
         }
+        lines.push(indent.repeat(depth) + '>');
         depth++;
         continue;
       }

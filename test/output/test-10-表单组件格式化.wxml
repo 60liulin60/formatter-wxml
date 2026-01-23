@@ -8,7 +8,8 @@
     name="content"
     placeholder="请输入内容"
     value="{{form.content}}"
-    bind:input="onTextareaInput">
+    bind:input="onTextareaInput"
+  >
   </textarea>
   <button form-type="submit">提交</button>
 </form>

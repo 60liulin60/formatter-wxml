@@ -1,0 +1,5 @@
+<text
+  class="title"
+  data-id="123"
+  bind:tap="handleTap"
+  style="color:red">这是文本内容</text>

@@ -1,4 +1,0 @@
-<view class="agreementLink-box-wrap" wx:if="{{agreementList.length > 0}}">
-  <agreementLink typeList="{{agreementList}}" bind:agreementCheck="agreementCheck">
-  </agreementLink>
-</view>

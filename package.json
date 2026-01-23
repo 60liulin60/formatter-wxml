@@ -2,7 +2,7 @@
   "name": "wxml-formatter",
   "displayName": "WXML Formatter",
   "description": "A formatter for WeChat Mini Program WXML files",
-  "version": "1.3.3",
+  "version": "1.3.2",
   "publisher": "wxml-formatter-team",
   "icon": "images/logo.png",
   "scripts": {

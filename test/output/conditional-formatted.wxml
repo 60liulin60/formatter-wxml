@@ -1,9 +1,0 @@
-<view class="container">
-  <text wx:if="{{user.isVip}}">VIP用户</text>
-  <text wx:elif="{{user.isActive}}">活跃用户</text>
-  <text wx:else>普通用户</text>
-  <view wx:if="{{showDetails}}">
-    <text>详细信息：{{user.details}}</text>
-    <button wx:if="{{canEdit}}" bind:tap="onEdit">编辑</button>
-  </view>
-</view>

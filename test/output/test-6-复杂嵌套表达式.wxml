@@ -1,4 +1,5 @@
 <view
-  class="{{item.status === 'active' ? (item.type === 'vip' ? 'vip-active' : 'normal-active') : 'inactive'}}">
+  class="{{item.status === 'active' ? (item.type === 'vip' ? 'vip-active' : 'normal-active') : 'inactive'}}"
+>
   <text>{{item.data && item.data.user ? item.data.user.name : '未知用户'}}</text>
 </view>

@@ -205,6 +205,11 @@ class WXMLFormatter {
             };
             // 处理多属性开始标签（优先级高于短文本）
             if (token.type === 'open' && shouldWrapAttributes(token, config)) {
+                const shouldInlineAfterWrapped =
+                    nextToken?.type === 'text' &&
+                        nextNextToken?.type === 'close' &&
+                        nextNextToken.tagName === token.tagName &&
+                        config.inlineTags.includes(token.tagName || '');
                 // 多行显示属性
                 lines.push(indent.repeat(depth) + `<${token.tagName}`);
                 const attrs = token.attributes;
@@ -212,8 +217,23 @@ class WXMLFormatter {
                     const attr = attrs[j];
                     const isLast = j === attrs.length - 1;
                     const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-                    lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? '>' : ''}`);
+                    if (isLast) {
+                        if (shouldInlineAfterWrapped) {
+                            lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken.content}${nextNextToken.content}`);
+                        }
+                        else {
+                            lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+                        }
+                    }
+                    else {
+                        lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+                    }
                 }
+                if (shouldInlineAfterWrapped) {
+                    i += 2;
+                    continue;
+                }
+                lines.push(indent.repeat(depth) + '>');
                 depth++;
                 continue;
             }

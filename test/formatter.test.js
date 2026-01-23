@@ -247,10 +247,11 @@ class WXMLFormatter {
           // 布尔属性（value 为空）只输出属性名
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
           if (isLast) {
-            const suffix = shouldInlineAfterWrapped
-              ? `>${nextToken.content}${nextNextToken.content}`
-              : '>';
-            lines.push(indent.repeat(depth + 1) + `${attrStr}${suffix}`);
+            if (shouldInlineAfterWrapped) {
+              lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken.content}${nextNextToken.content}`);
+            } else {
+              lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+            }
           } else {
             lines.push(indent.repeat(depth + 1) + `${attrStr}`);
           }
@@ -260,6 +261,8 @@ class WXMLFormatter {
           i += 2;
           continue;
         }
+
+        lines.push(indent.repeat(depth) + '>');
 
         depth++;
         continue;
@@ -388,7 +391,8 @@ const testCases = [
   bind:tap="onTap"
   data-id="{{item.id}}"
   data-type="{{item.type}}"
-  disabled="{{loading}}">
+  disabled="{{loading}}"
+>
   提交
 </button>
 `
@@ -447,6 +451,28 @@ const testCases = [
     expected: `<text
   class="tip-wrap cashback-wrap"
   wx:if="{{item.incomeSource && item.incomeSource === 'platform_cashback'}}">限时奖励</text>
+`
+  },
+  {
+    name: 'text 标签格式化问题 - 多属性换行仍应同行输出',
+    input: '<text class="title" data-id="123" bind:tap="handleTap" style="color:red">这是文本内容</text>',
+    description: '测试 text 标签多属性换行时，内容与 </text> 仍与最后一个属性行保持同一行',
+    expected: `<text
+  class="title"
+  data-id="123"
+  bind:tap="handleTap"
+  style="color:red">这是文本内容</text>
+`
+  },
+  {
+    name: 'text 标签格式化问题 - 布尔属性换行仍应同行输出',
+    input: '<text class="asda" tabindex assdassd asd>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>',
+    description: '测试 text 标签包含布尔属性且触发换行时，内容与 </text> 仍与最后一个属性行保持同一行',
+    expected: `<text
+  class="asda"
+  tabindex
+  assdassd
+  asd>asdasdasdsaaszdasd asdasdasd asdasd asd asd asd asd asd asd asd a</text>
 `
   }
 ];

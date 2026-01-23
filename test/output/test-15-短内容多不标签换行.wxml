@@ -1,0 +1,105 @@
+<van-popup
+  show="{{show}}"
+  position="bottom"
+  round
+  custom-style="height: 90vh;"
+  bind:close="onClose">
+  <view class="poster-generator">
+    <!-- 标题栏 -->
+    <view class="header">
+      <text class="title">生成专属海报</text>
+      <van-icon
+        name="cross"
+        size="20"
+        class="close-icon"
+        catch:tap="onClose" />
+    </view>
+    <block wx:if="{{productList.length !== 0}}">
+      <!-- 可滚动内容区域 -->
+      <scroll-view scroll-y class="scroll-content">
+        <!-- 选择推广商品 -->
+        <view class="section product-section">
+          <text class="section-title">选择推广商品</text>
+          <horizontalScrollLoad
+            enablemore="{{hasMoreProducts}}"
+            isLoadingOver="{{isProductLoadingOver}}"
+            isLoadAll="{{isProductLoadAll}}"
+            bind:onLoadmore="loadMoreProducts"
+            styleInfo="height: 100%;"
+            class="product-list">
+            <view slot="content" class="product-list-content">
+              <view
+                wx:for="{{productList}}"
+                wx:key="id"
+                class="product-item {{selectedProduct.id === item.id ? 'active' : ''}}"
+                catch:tap="onSelectProduct"
+                data-product="{{item}}">
+                <view class="product-tags">
+                  <text class="tag type-tag">{{item.typeLabel}}</text>
+                  <text class="tag discount-tag" wx:if="{{item.discount}}">赚¥{{item.discount}}</text>
+                </view>
+                <text class="product-name">{{item.name}}</text>
+                <text class="product-price">¥{{item.price}}</text>
+              </view>
+            </view>
+          </horizontalScrollLoad>
+        </view>
+        <!-- 选择主治方向 -->
+        <view class="section direction-section">
+          <view class="direction-header">
+            <view class="direction-title-wrap">
+              <van-icon
+                name="arrow-down"
+                size="14" />
+              <text class="section-title">选择主治方向（可多选，展示在海报上）</text>
+            </view>
+          </view>
+          <view class="direction-list">
+            <view
+              wx:for="{{directionList}}"
+              wx:key="index"
+              class="direction-item {{item.selected ? 'active' : ''}}"
+              catch:tap="onSelectDirection"
+              data-index="{{index}}">
+              {{item.name}}
+            </view>
+          </view>
+        </view>
+        <!-- 海报预览区域 -->
+        <view class="preview-section">
+          <canvas
+            type="2d"
+            id="posterCanvas"
+            class="poster-canvas"
+            style="width: {{canvasWidth}}px; height: {{canvasHeight}}px;" />
+        </view>
+        <!-- 选择海报风格 -->
+        <view class="style-section">
+          <text class="style-title">选择海报风格</text>
+          <view class="style-list">
+            <view
+              wx:for="{{styleList}}"
+              wx:key="id"
+              class="style-item {{currentStyle.id === item.id ? 'active' : ''}}"
+              style="background: {{item.color}};"
+              catch:tap="onSelectStyle"
+              data-style="{{item}}">
+              <van-icon
+                wx:if="{{currentStyle.id === item.id}}"
+                name="success"
+                color="#fff"
+                size="16" />
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <!-- 底部按钮 -->
+      <view class="footer-btns">
+        <button class="btn share-btn" catch:tap="onShareImage">发送给朋友</button>
+        <button class="btn save-btn" catch:tap="onSavePoster">保存到相册</button>
+      </view>
+    </block>
+    <noData wx:if="{{productList.length === 0}}">
+    </noData>
+  </view>
+</van-popup>

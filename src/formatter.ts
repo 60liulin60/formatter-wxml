@@ -195,33 +195,49 @@ export class WXMLFormatter {
     const tokens: Token[] = [];
     const cleaned = text.replace(/\s+/g, ' ').trim();
     
-    const regex = /<!\-\-[\s\S]*?\-\->|<\/[\w-]+>|<[\w-]+[^>]*\/>|<[\w-]+[^>]*>|[^<]+/g;
+    const regex = /<!\-\-[\s\S]*?\-\->|<\/[\w-]+\s*>|<[\w-]+[^>]*\/\s*>|<[\w-]+[^>]*\s*>|[^<]+|</g;
     let match;
 
     while ((match = regex.exec(cleaned)) !== null) {
-      const content = match[0].trim();
-      if (!content) continue;
+      const raw = match[0].trim();
+      if (!raw) continue;
+
+      const content = raw.startsWith('<')
+        ? raw.replace(/\/\s*>$/, '/>').replace(/\s+>$/, '>')
+        : raw;
 
       if (content.startsWith('<!--')) {
         tokens.push({ type: 'comment', content });
+      } else if (content === '<') {
+        tokens.push({ type: 'text', content });
       } else if (content.startsWith('</')) {
         const tagName = content.match(/<\/([\w-]+)/)?.[1] || '';
         tokens.push({ type: 'close', content, tagName });
-      } else if (content.endsWith('/>')) {
-        const tagName = content.match(/<([\w-]+)/)?.[1] || '';
+      } else if (/\/>$/.test(content)) {
+        const tagNameMatch = content.match(/<([\w-]+)/);
+        if (!tagNameMatch) {
+          tokens.push({ type: 'text', content });
+          continue;
+        }
+        const tagName = tagNameMatch[1] || '';
         const attrStr = content.slice(tagName.length + 1, -2);
-        tokens.push({ 
-          type: 'selfClose', 
-          content, 
+        tokens.push({
+          type: 'selfClose',
+          content,
           tagName,
           attributes: this.parseAttributes(attrStr)
         });
       } else if (content.startsWith('<')) {
-        const tagName = content.match(/<([\w-]+)/)?.[1] || '';
+        const tagNameMatch = content.match(/<([\w-]+)/);
+        if (!tagNameMatch) {
+          tokens.push({ type: 'text', content });
+          continue;
+        }
+        const tagName = tagNameMatch[1] || '';
         const attrStr = content.slice(tagName.length + 1, -1);
-        tokens.push({ 
-          type: 'open', 
-          content, 
+        tokens.push({
+          type: 'open',
+          content,
           tagName,
           attributes: this.parseAttributes(attrStr)
         });
@@ -262,6 +278,12 @@ export class WXMLFormatter {
 
       // 处理多属性开始标签（优先级高于短文本）
       if (token.type === 'open' && shouldWrapAttributes(token, config)) {
+        const shouldInlineAfterWrapped =
+          nextToken?.type === 'text' &&
+          nextNextToken?.type === 'close' &&
+          nextNextToken.tagName === token.tagName &&
+          config.inlineTags.includes(token.tagName || '');
+
         // 多行显示属性
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         const attrs = token.attributes!;
@@ -269,7 +291,18 @@ export class WXMLFormatter {
           const attr = attrs[j];
           const isLast = j === attrs.length - 1;
           const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? '>' : ''}`);
+          if (isLast) {
+            const suffix = shouldInlineAfterWrapped
+              ? `>${nextToken.content}${nextNextToken.content}`
+              : '>';
+            lines.push(indent.repeat(depth + 1) + `${attrStr}${suffix}`);
+          } else {
+            lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+          }
+        }
+        if (shouldInlineAfterWrapped) {
+          i += 2;
+          continue;
         }
         depth++;
         continue;

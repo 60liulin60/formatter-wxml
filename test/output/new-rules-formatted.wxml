@@ -4,8 +4,7 @@
   <text wx:else>普通用户</text>
   <view wx:if="{{showDetails}}">
     <text>详细信息：{{user.details}}</text>
-    <button wx:if="{{canEdit}}"
-      bind:tap="onEdit">编辑</button>
+    <button wx:if="{{canEdit}}" bind:tap="onEdit">编辑</button>
   </view>
   <image
     src="{{user.avatar}}"
@@ -17,5 +16,8 @@
     bind:tap="onEdit"
     data-id="{{item.id}}"
     class="edit-btn"
-    disabled="{{loading}}">编辑按钮</button>
+    disabled="{{loading}}"
+  >
+    编辑按钮
+  </button>
 </view>

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const formatter_1 = require("./formatter");
-const WXML_SELECTOR = { scheme: 'file', language: 'wxml' };
+const WXML_SELECTOR = [{ scheme: 'file', pattern: '**/*.wxml' }];
 /**
  * Creates a full document range
  */
@@ -36,8 +36,8 @@ function activate(context) {
             vscode.window.showErrorMessage('No active editor found');
             return;
         }
-        if (editor.document.languageId !== 'wxml') {
-            vscode.window.showErrorMessage('This command only works with WXML files');
+        if (!editor.document.fileName.endsWith('.wxml')) {
+            vscode.window.showErrorMessage('This command only works with .wxml files');
             return;
         }
         const document = editor.document;
@@ -53,7 +53,7 @@ function activate(context) {
     const documentFormattingProvider = vscode.languages.registerDocumentFormattingEditProvider(WXML_SELECTOR, {
         provideDocumentFormattingEdits(document) {
             // Double check: only format .wxml files
-            if (document.languageId !== 'wxml' && !document.fileName.endsWith('.wxml')) {
+            if (!document.fileName.endsWith('.wxml')) {
                 return [];
             }
             const fullRange = getFullDocumentRange(document);
@@ -65,7 +65,7 @@ function activate(context) {
     const rangeFormattingProvider = vscode.languages.registerDocumentRangeFormattingEditProvider(WXML_SELECTOR, {
         provideDocumentRangeFormattingEdits(document, range) {
             // Double check: only format .wxml files
-            if (document.languageId !== 'wxml' && !document.fileName.endsWith('.wxml')) {
+            if (!document.fileName.endsWith('.wxml')) {
                 return [];
             }
             const text = document.getText(range);

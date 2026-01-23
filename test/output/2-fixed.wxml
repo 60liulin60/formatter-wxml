@@ -8,13 +8,15 @@
     class="scroll-view_H"
     scroll-x="true"
     scroll-left="{{scrollLeft}}"
-    bindscrolltolower="loadMore">
+    bindscrolltolower="loadMore"
+  >
     <view
       wx:for="{{dataList}}"
       wx:key="id"
       wx:for-item="item"
       wx:for-index="idx"
-      class="item-container">
+      class="item-container"
+    >
       <view class="item-header">
         <text class="item-title">{{item.title}}</text>
         <text wx:if="{{item.isNew}}" class="new-tag">新</text>
@@ -33,12 +35,18 @@
           wx:if="{{item.canEdit}}"
           bind:tap="onEdit"
           data-id="{{item.id}}"
-          class="edit-btn">编辑</button>
+          class="edit-btn"
+        >
+          编辑
+        </button>
         <button
           bind:tap="onDelete"
           data-id="{{item.id}}"
           class="delete-btn"
-          wx:if="{{item.canDelete}}">删除</button>
+          wx:if="{{item.canDelete}}"
+        >
+          删除
+        </button>
       </view>
       <view wx:if="{{dataList.length === 0}}" class="empty-state">
         <text>暂无数据</text>

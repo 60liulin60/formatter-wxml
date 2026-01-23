@@ -3,15 +3,16 @@
     wx:for="{{categories}}"
     wx:key="id"
     wx:for-item="category"
-    class="category">
-    <text
-      class="category-title">{{category.name}}</text>
+    class="category"
+  >
+    <text class="category-title">{{category.name}}</text>
     <view
       wx:for="{{category.items}}"
       wx:key="itemId"
       wx:for-item="item"
       wx:for-index="itemIndex"
-      class="item">
+      class="item"
+    >
       <text>{{itemIndex + 1}}. {{item.title}}</text>
       <text class="price">¥{{item.price}}</text>
     </view>

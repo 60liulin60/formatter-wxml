@@ -7,14 +7,13 @@
 - 🎯 **专业WXML格式化** - 专门针对微信小程序WXML文件优化
 - 🔧 **完整语法支持** - 支持微信小程序特有的语法（wx:if、wx:for、bind:等）
 - 🎨 **表达式保护** - 智能保护双花括号表达式不被破坏（包括复杂嵌套表达式）
-- ⚙️ **丰富配置选项** - 提供多种可配置的格式化选项
+- ⚙️ **基础配置选项** - 提供核心格式化配置选项
 - 🚀 **多种格式化方式** - 支持右键菜单、快捷键和命令面板格式化
-- 📝 **语法高亮** - 完整的WXML语法高亮支持
 - 🆕 **智能格式化规则**：
   - 内联标签（`<text>`、`<icon>`等）内容保持同行
+  - `<text>` 标签阈值规则：属性数 >= 3 或开始标签长度 > 100 时才多行格式化，否则保持单行
   - 自闭合标签（`<image>`、`<input>`等）自动转换为规范格式
   - 可配置的属性换行阈值（默认超过3个属性时换行）
-  - 属性对齐和排序功能
   - 清晰的层级缩进结构
   - 支持所有微信小程序组件（包括带连字符的标签）
 - 🐛 **稳定可靠** - 修复了带连字符标签被截断的关键问题
@@ -47,11 +46,7 @@
 ```json
 {
   "wxml-formatter.indentSize": 2,
-  "wxml-formatter.maxLineLength": 120,
-  "wxml-formatter.preserveNewlines": true,
   "wxml-formatter.wrapAttributes": 3,
-  "wxml-formatter.alignAttributes": true,
-  "wxml-formatter.sortAttributes": false,
   "wxml-formatter.selfClosingTags": [
     "image", "input", "icon", "video", "audio", "camera",
     "live-player", "live-pusher", "map", "canvas", "web-view",
@@ -76,16 +71,9 @@
 ### 基础配置说明
 
 - `indentSize`: 缩进空格数，默认为2
-- `maxLineLength`: 最大行长度，超过此长度会换行，默认为120
-- `preserveNewlines`: 是否保留现有的换行符，默认为true
-
-### 高级配置说明
-
 - `wrapAttributes`: 超过多少个属性时换行，默认为3
-  - 当属性数量 > 3 时，自动换行
+  - 当属性数量 >= 3 时，自动换行
   - 或当标签长度 > 100 字符时，也会自动换行
-- `alignAttributes`: 是否对齐属性，默认为true
-- `sortAttributes`: 是否按优先级排序属性，默认为false
 
 ### 标签配置说明
 
@@ -171,6 +159,36 @@
 </view>
 ```
 
+### text 标签阈值格式化示例
+
+**格式化前（少于3个属性且长度 <= 100）：**
+
+```xml
+<text class="tip-wrap cashback-wrap">限时奖励</text>
+```
+
+**格式化后（保持单行）：**
+
+```xml
+<text class="tip-wrap cashback-wrap">限时奖励</text>
+```
+
+**格式化前（>=3 个属性）：**
+
+```xml
+<text class="title" data-id="123" bind:tap="handleTap" style="color:red">这是文本内容</text>
+```
+
+**格式化后（多行，> 独立一行，内容与 </text> 同行）：**
+
+```xml
+<text
+  class="title"
+  data-id="123"
+  bind:tap="handleTap"
+  style="color:red">这是文本内容</text>
+```
+
 ### 布尔属性示例
 
 **格式化前：**
@@ -211,14 +229,27 @@
 
 ### 格式化规则说明
 
-- ✅ `<text>` 标签内容保持在同一行
+- ✅ `<text>` 标签内容保持在同一行（少于3个属性且长度 <= 100 时保持单行）
+- ✅ `<text>` 标签阈值规则：属性数 >= 3 或开始标签长度 > 100 时多行格式化
 - ✅ `<image>` 标签自动转换为自闭合格式
-- ✅ 属性超过 3 个或标签长度超过 100 字符时自动换行
+- ✅ 属性数 >= 3 或标签长度超过 100 字符时自动换行
 - ✅ 布尔属性（如 `disabled`、`showBtn`）正确保留
 - ✅ 清晰的层级缩进结构
 - ✅ 正确处理带连字符的标签（如 `scroll-view`、`swiper-item` 等）
 
 ## 版本历史
+
+### v1.3.2 (2026-01-23) - 体验优化版本
+
+- 🎯 **优化**: text 标签采用阈值规则，避免过度换行
+  - 仅当属性数 >= 3 或开始标签长度 > 100 时才多行格式化
+  - 否则保持单行，提升可读性
+  - 示例：`<text class="tip-wrap cashback-wrap">限时奖励</text>` 保持单行
+- 🔧 **修复**: 代码高亮冲突问题
+  - 移除本插件对 WXML 语法高亮的接管
+  - 改用基于文件扩展名（.wxml）的格式化注册
+  - 可与其他高亮插件共存，不再导致高亮丢失
+- 📝 **测试**: 新增 text 标签阈值测试用例，18 个测试全部通过
 
 ### v1.3.1 (2025-12-30) - 修复版本
 

@@ -1,43 +1,30 @@
- <view class="content-box-wrap">  
-  <view class="bottom">  
-    <view class="consultation-fees-wrap">  
-      <view class="title">  
-         <text  
-          class="text"  
-        >{{incomeSourceStr}}{{item.incomeSource && item.incomeSource === 'platform_cashback'&&item.incomeType === 'REFUND'?'退款':''}}</text>  
-        <text class="text">-</text>  
-        <text class="text" wx:if="{{item.incomeSource !== 'OTHER'}}"  
-          >{{item.patient.name || ''}}</text  
-        >  
-        <text class="text" wx:else>{{item.user.name || ''}}</text>  
-        <text class="tip-wrap add-wrap" wx:if="{{item.incomeExplain && item.incomeType === 'ADD'}}"  
-          >{{item.incomeExplain || ''}}</text  
-        >  
-        <text  
-          class="tip-wrap refund-wrap"  
-          wx:if="{{item.incomeExplain && item.incomeType === 'REFUND'}}"  
-          >{{item.incomeExplain || ''}}</text  
-        >
-         <text  
-          class="tip-wrap cashback-wrap"  
-          wx:if="{{item.incomeSource && item.incomeSource === 'platform_cashback'}}"  
-        >限时奖励</text>  
-        <van-icon  
-          name="question"  
-          color="#FF9A14"  
-          catch:tap="showTips"  
-          wx:if="{{item.incomeType !== 'REFUND' && item.addedTaxPrice&&item.addedTaxPrice>0}}"  
-        />  
-      </view>  
-      <view class="number {{item.incomeType === 'REFUND'?'red':'green'}}">  
-        <text>{{item.incomeType === 'REFUND'?'- ':'+'}}￥{{item.incomeAmount}}</text>  
-      </view>  
-    </view>  
-    <view class="time-wrap">  
-      <view>服务来源：{{item.incomeSource !== 'OTHER'?item.user.name:'-'}}</view>  
-      <view>{{item.incomeTime}}</view>  
-    </view>  
-    <view class="reduce-amount" wx:if="{{item.incomeReduceAmount || item.incomeReduceAmount==0}}">扣除推广奖励：- {{item.incomeReduceAmount}}</view>  
-    <view class="divider"></view>  
-  </view>  
+<view class="content-box-wrap">
+  <view class="bottom">
+    <view class="consultation-fees-wrap">
+      <view class="title">
+        <text class="text">{{incomeSourceStr}}{{item.incomeSource && item.incomeSource === 'platform_cashback'&&item.incomeType === 'REFUND'?'退款':''}}</text>
+        <text class="text">-</text>
+        <text class="text" wx:if="{{item.incomeSource !== 'OTHER'}}">{{item.patient.name || ''}}</text>
+        <text class="text" wx:else>{{item.user.name || ''}}</text>
+        <text class="tip-wrap add-wrap" wx:if="{{item.incomeExplain && item.incomeType === 'ADD'}}">{{item.incomeExplain || ''}}</text>
+        <text class="tip-wrap refund-wrap" wx:if="{{item.incomeExplain && item.incomeType === 'REFUND'}}">{{item.incomeExplain || ''}}</text>
+        <text class="tip-wrap cashback-wrap" wx:if="{{item.incomeSource && item.incomeSource === 'platform_cashback'}}">限时奖励</text>
+        <van-icon
+          name="question"
+          color="#FF9A14"
+          catch:tap="showTips"
+          wx:if="{{item.incomeType !== 'REFUND' && item.addedTaxPrice&&item.addedTaxPrice>0}}" />
+      </view>
+      <view class="number {{item.incomeType === 'REFUND'?'red':'green'}}">
+        <text>{{item.incomeType === 'REFUND'?'- ':'+'}}￥{{item.incomeAmount}}</text>
+      </view>
+    </view>
+    <view class="time-wrap">
+      <view>服务来源：{{item.incomeSource !== 'OTHER'?item.user.name:'-'}}</view>
+      <view>{{item.incomeTime}}</view>
+    </view>
+    <view class="reduce-amount" wx:if="{{item.incomeReduceAmount || item.incomeReduceAmount==0}}">扣除推广奖励：- {{item.incomeReduceAmount}}</view>
+    <view class="divider">
+    </view>
+  </view>
 </view>

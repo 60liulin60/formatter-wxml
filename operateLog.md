@@ -1,0 +1,19 @@
+- 时间：2026-01-23 11:54
+- 操作类型：[修改]
+- 影响文件：
+  - e:\otherObeject\formatter-wxml\package.json
+  - e:\otherObeject\formatter-wxml\src\extension.ts
+  - e:\otherObeject\formatter-wxml\src\formatter.ts
+  - e:\otherObeject\formatter-wxml\test\formatter.test.js
+- 变更摘要：取消本插件对 WXML 语法高亮的接管，并调整 text 标签为带属性时强制多行格式化。
+- 原因：避免与其他高亮插件冲突导致高亮丢失；统一 text 标签输出风格。
+- 测试状态：[已测试]
+
+- 时间：2026-01-23 12:25
+- 操作类型：[修改]
+- 影响文件：
+  - e:\otherObeject\formatter-wxml\src\formatter.ts
+  - e:\otherObeject\formatter-wxml\test\formatter.test.js
+- 变更摘要：text 标签从“带属性就强制换行”调整为“属性数>=3或开始标签长度>100才换行”。
+- 原因：满足阈值规则，避免 text 少量属性时过度换行。
+- 测试状态：[待测试]

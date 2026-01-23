@@ -1,5 +1,9 @@
 <scroll-view scroll-y="true" class="scroll-area">
-  <swiper indicator-dots="{{true}}" autoplay="{{false}}" interval="{{5000}}">
+  <swiper
+    indicator-dots="{{true}}"
+    autoplay="{{false}}"
+    interval="{{5000}}"
+  >
     <swiper-item>
       <image src="{{item.url}}" mode="aspectFill" />
     </swiper-item>

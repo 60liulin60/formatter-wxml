@@ -99,28 +99,20 @@ export class WXMLFormatter {
     }
   }
 
-  /**
-   * 记录原始标签长度（保护语法之前）
-   */
+  /** 记录原始标签长度（保护语法之前） */
   private recordOriginalLengths(text: string): Map<string, number> {
     const lengths = new Map<string, number>();
     const regex = /<([\w-]+)[^>]*>/g;
     let match;
 
     while ((match = regex.exec(text)) !== null) {
-      const fullTag = match[0];
-      const tagName = match[1];
-      // 使用标签名+位置作为key
-      const key = `${tagName}_${match.index}`;
-      lengths.set(key, fullTag.length);
+      lengths.set(`${match[1]}_${match.index}`, match[0].length);
     }
 
     return lengths;
   }
 
-  /**
-   * 将原始长度信息附加到 token
-   */
+  /** 将原始长度信息附加到 token */
   private attachOriginalLengths(tokens: Token[], lengths: Map<string, number>): void {
     let position = 0;
     for (const token of tokens) {
@@ -192,6 +184,11 @@ export class WXMLFormatter {
     return result;
   }
 
+  /** 从标签内容提取标签名 */
+  private extractTagName(content: string): string {
+    return content.match(/<[\/]?([\w-]+)/)?.[1] || '';
+  }
+
   private tokenize(text: string): Token[] {
     const tokens: Token[] = [];
     const cleaned = text.replace(/\s+/g, ' ').trim();
@@ -212,35 +209,30 @@ export class WXMLFormatter {
       } else if (content === '<') {
         tokens.push({ type: 'text', content });
       } else if (content.startsWith('</')) {
-        const tagName = content.match(/<\/([\w-]+)/)?.[1] || '';
-        tokens.push({ type: 'close', content, tagName });
+        tokens.push({ type: 'close', content, tagName: this.extractTagName(content) });
       } else if (/\/>$/.test(content)) {
-        const tagNameMatch = content.match(/<([\w-]+)/);
-        if (!tagNameMatch) {
+        const tagName = this.extractTagName(content);
+        if (!tagName) {
           tokens.push({ type: 'text', content });
           continue;
         }
-        const tagName = tagNameMatch[1] || '';
-        const attrStr = content.slice(tagName.length + 1, -2);
         tokens.push({
           type: 'selfClose',
           content,
           tagName,
-          attributes: this.parseAttributes(attrStr)
+          attributes: this.parseAttributes(content.slice(tagName.length + 1, -2))
         });
       } else if (content.startsWith('<')) {
-        const tagNameMatch = content.match(/<([\w-]+)/);
-        if (!tagNameMatch) {
+        const tagName = this.extractTagName(content);
+        if (!tagName) {
           tokens.push({ type: 'text', content });
           continue;
         }
-        const tagName = tagNameMatch[1] || '';
-        const attrStr = content.slice(tagName.length + 1, -1);
         tokens.push({
           type: 'open',
           content,
           tagName,
-          attributes: this.parseAttributes(attrStr)
+          attributes: this.parseAttributes(content.slice(tagName.length + 1, -1))
         });
       } else {
         tokens.push({ type: 'text', content });
@@ -255,6 +247,24 @@ export class WXMLFormatter {
     const indent = ' '.repeat(config.indentSize);
     let depth = 0;
 
+    // 判断是否需要多行显示：属性数量 >= 3 或 标签长度 > 100
+    const shouldWrapAttributes = (token: Token): boolean => {
+      if (!token.attributes || token.attributes.length === 0) return false;
+      if (token.attributes.length >= config.wrapAttributes) return true;
+      if (token.originalLength && token.originalLength > 100) return true;
+      return false;
+    };
+
+    // 格式化属性字符串
+    const formatAttr = (attr: ParsedAttribute): string => 
+      attr.value ? `${attr.name}=${attr.value}` : attr.name;
+
+    // 检查是否为内联标签的三明治结构（<tag>text</tag>）
+    const isInlineSandwich = (token: Token, next: Token | undefined, nextNext: Token | undefined): boolean =>
+      next?.type === 'text' &&
+      nextNext?.type === 'close' &&
+      nextNext.tagName === token.tagName;
+
     for (let i = 0; i < tokens.length; i++) {
       const token = tokens[i];
       const nextToken = tokens[i + 1];
@@ -267,62 +277,41 @@ export class WXMLFormatter {
         continue;
       }
 
-      // 判断是否需要多行显示：属性数量 >= 3 或 标签长度 > 100
-      const shouldWrapAttributes = (token: Token, config: FormatterConfig): boolean => {
-        if (!token.attributes || token.attributes.length === 0) return false;
-        // 条件1：属性数量 >= 3
-        if (token.attributes.length >= config.wrapAttributes) return true;
-        // 条件2：标签原始长度 > 100
-        if (token.originalLength && token.originalLength > 100) return true;
-        return false;
-      };
-
+      // 处理 text 标签的多属性换行（内联输出）
       if (
         token.type === 'open' &&
         token.tagName === 'text' &&
-        shouldWrapAttributes(token, config) &&
-        nextToken?.type === 'text' &&
-        nextNextToken?.type === 'close' &&
-        nextNextToken.tagName === token.tagName
+        shouldWrapAttributes(token) &&
+        isInlineSandwich(token, nextToken, nextNextToken)
       ) {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        const attrs = token.attributes ?? [];
-        for (let j = 0; j < attrs.length; j++) {
-          const attr = attrs[j]!;
-          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+        for (const attr of token.attributes ?? []) {
+          lines.push(indent.repeat(depth + 1) + formatAttr(attr));
         }
-        lines.push(indent.repeat(depth) + `>${nextToken.content}${nextNextToken.content}`);
+        lines.push(indent.repeat(depth) + `>${nextToken!.content}${nextNextToken!.content}`);
         i += 2;
         continue;
       }
 
-      // 处理多属性开始标签（优先级高于短文本）
-      if (token.type === 'open' && shouldWrapAttributes(token, config)) {
-        const shouldInlineAfterWrapped =
-          nextToken?.type === 'text' &&
-          nextNextToken?.type === 'close' &&
-          nextNextToken.tagName === token.tagName &&
-          config.inlineTags.includes(token.tagName || '');
+      // 处理多属性开始标签
+      if (token.type === 'open' && shouldWrapAttributes(token)) {
+        const isInlineTag = config.inlineTags.includes(token.tagName || '');
+        const shouldInline = isInlineTag && isInlineSandwich(token, nextToken, nextNextToken);
 
-        // 多行显示属性
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
         const attrs = token.attributes!;
-        for (let j = 0; j < attrs.length; j++) {
-          const attr = attrs[j]!;
-          const isLast = j === attrs.length - 1;
-          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          if (isLast) {
-            if (shouldInlineAfterWrapped) {
-              lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken.content}${nextNextToken.content}`);
-            } else {
-              lines.push(indent.repeat(depth + 1) + `${attrStr}`);
-            }
+        const lastIndex = attrs.length - 1;
+        
+        for (let j = 0; j <= lastIndex; j++) {
+          const attrStr = formatAttr(attrs[j]!);
+          if (j === lastIndex && shouldInline) {
+            lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken!.content}${nextNextToken!.content}`);
           } else {
-            lines.push(indent.repeat(depth + 1) + `${attrStr}`);
+            lines.push(indent.repeat(depth + 1) + attrStr);
           }
         }
-        if (shouldInlineAfterWrapped) {
+
+        if (shouldInline) {
           i += 2;
           continue;
         }
@@ -331,41 +320,27 @@ export class WXMLFormatter {
         continue;
       }
 
-      // 处理内联标签：<tag>text</tag> 保持同行
-      if (token.type === 'open' && 
-          config.inlineTags.includes(token.tagName || '') &&
-          nextToken?.type === 'text' &&
-          nextNextToken?.type === 'close' &&
-          nextNextToken.tagName === token.tagName) {
-        lines.push(indent.repeat(depth) + token.content + nextToken.content + nextNextToken.content);
-        i += 2;
-        continue;
-      }
-
-      // 处理标签内的简短文本：<tag>短文本</tag> 保持同行
-      if (token.type === 'open' &&
-          nextToken?.type === 'text' &&
-          nextNextToken?.type === 'close' &&
-          nextNextToken.tagName === token.tagName &&
-          nextToken.content.length <= 50) {
-        lines.push(indent.repeat(depth) + token.content + nextToken.content + nextNextToken.content);
+      // 处理内联标签和短文本标签（保持同行）
+      if (
+        token.type === 'open' &&
+        isInlineSandwich(token, nextToken, nextNextToken) &&
+        (config.inlineTags.includes(token.tagName || '') || nextToken!.content.length <= 50)
+      ) {
+        lines.push(indent.repeat(depth) + token.content + nextToken!.content + nextNextToken!.content);
         i += 2;
         continue;
       }
 
       // 处理多属性自闭合标签
-      if (token.type === 'selfClose' && shouldWrapAttributes(token, config)) {
+      if (token.type === 'selfClose' && shouldWrapAttributes(token)) {
         lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        const attrs = token.attributes!; // 已经在 shouldWrapAttributes 中检查过
-        for (let j = 0; j < attrs.length; j++) {
-          const attr = attrs[j]!;
-          const isLast = j === attrs.length - 1;
-          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          if (isLast) {
-            lines.push(indent.repeat(depth + 1) + `${attrStr} />`);
-          } else {
-            lines.push(indent.repeat(depth + 1) + `${attrStr}`);
-          }
+        const attrs = token.attributes!;
+        const lastIndex = attrs.length - 1;
+        
+        for (let j = 0; j <= lastIndex; j++) {
+          const attrStr = formatAttr(attrs[j]!);
+          const suffix = j === lastIndex ? ' />' : '';
+          lines.push(indent.repeat(depth + 1) + attrStr + suffix);
         }
         continue;
       }

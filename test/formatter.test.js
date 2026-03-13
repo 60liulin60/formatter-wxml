@@ -130,13 +130,16 @@ class WXMLFormatter {
     let result = text;
 
     for (const tagName of selfClosingTags) {
+      // 成对标签转自闭合（使用正向预查确保完整标签名匹配）
+      // 注意：(?=[\s/>]) 确保标签名后必须是空格、/ 或 >，避免匹配到前缀相同的标签
       result = result.replace(
-        new RegExp(`<${tagName}(\\s[^>]*?)?><\\/${tagName}>`, 'g'),
+        new RegExp(`<${tagName}(?=[\\s/>])(\\s[^>]*?)?></${tagName}>`, 'g'),
         (_, attrs) => `<${tagName}${attrs || ''} />`
       );
 
+      // 规范化自闭合标签格式（确保标签名后是空格才能匹配）
       result = result.replace(
-        new RegExp(`<${tagName}([^>]*?)\\s*/>`, 'g'),
+        new RegExp(`<${tagName}(?=\\s)(\\s[^>]*)\\s*/>`, 'g'),
         (_, attrs) => {
           const trimmed = attrs.trim();
           return trimmed ? `<${tagName} ${trimmed} />` : `<${tagName} />`;

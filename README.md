@@ -98,64 +98,211 @@
 **格式化前：**
 
 ```xml
-<view class="container"><text wx:if="{{show}}">Hello</text><button bind:tap="onTap">Click</button></view>
-```
-
-**格式化后：**
-
-```xml
-<view class="container"><text wx:if="{{show}}">Hello</text><button bind:tap="onTap">Click</button>
-</view>
-```
-
-### 带连字符标签格式化（v1.2.2修复）
-
-**格式化前：**
-
-```xml
-<scroll-view class="scroll-view_H" scroll-x="true"><swiper-item><picker-view><picker-view-column></picker-view-column></picker-view></swiper-item></scroll-view>
-```
-
-**格式化后：**
-
-```xml
-<scroll-view class="scroll-view_H" scroll-x="true">
-  <swiper-item>
-    <picker-view>
-      <picker-view-column></picker-view-column>
-    </picker-view>
-  </swiper-item>
-</scroll-view>
-```
-
-### 复杂格式化示例
-
-**格式化前：**
-
-```xml
-<view class="container"><text wx:if="{{user.isVip}}">VIP用户</text><text wx:elif="{{user.isActive}}">活跃用户</text><text wx:else>普通用户</text><view wx:if="{{showDetails}}"><text>详细信息：{{user.details}}</text><button wx:if="{{canEdit}}" bind:tap="onEdit">编辑</button></view><image src="{{user.avatar}}" class="avatar" mode="aspectFit" bind:tap="onImageTap"></image><button wx:if="{{item.canEdit}}" bind:tap="onEdit" data-id="{{item.id}}" class="edit-btn" disabled="{{loading}}">编辑按钮</button></view>
+<view class="container"><text wx:if="{{show}}">Hello World</text><button bind:tap="onTap" class="btn">Click Me</button></view>
 ```
 
 **格式化后：**
 
 ```xml
 <view class="container">
-  <text wx:if="{{user.isVip}}">VIP用户</text>
-  <text wx:elif="{{user.isActive}}">活跃用户</text>
-  <text wx:else>普通用户</text>
-  <view wx:if="{{showDetails}}">
-    <text>详细信息：{{user.details}}</text>
-    <button wx:if="{{canEdit}}" bind:tap="onEdit">编辑</button>
-  </view>
-  <image src="{{user.avatar}}" class="avatar" mode="aspectFit" bind:tap="onImageTap" />
-  <button
-    wx:if="{{item.canEdit}}"
-    bind:tap="onEdit"
-    data-id="{{item.id}}"
-    class="edit-btn"
-    disabled="{{loading}}">
-    编辑按钮
-  </button>
+  <text wx:if="{{show}}">Hello World</text>
+  <button bind:tap="onTap" class="btn">Click Me</button>
+</view>
+```
+
+### 条件渲染格式化
+
+**格式化前：**
+
+```xml
+<view><text wx:if="{{condition}}">显示文本</text><text wx:elif="{{other}}">其他文本</text><text wx:else>默认文本</text></view>
+```
+
+**格式化后：**
+
+```xml
+<view>
+  <text wx:if="{{condition}}">显示文本</text>
+  <text wx:elif="{{other}}">其他文本</text>
+  <text wx:else>默认文本</text>
+</view>
+```
+
+### 列表渲染格式化
+
+**格式化前：**
+
+```xml
+<view wx:for="{{list}}" wx:key="id" wx:for-item="item" wx:for-index="index"><text>{{item.name}}</text></view>
+```
+
+**格式化后：**
+
+```xml
+<view
+  wx:for="{{list}}"
+  wx:key="id"
+  wx:for-item="item"
+  wx:for-index="index"
+>
+  <text>{{item.name}}</text>
+</view>
+```
+
+### 事件绑定格式化
+
+**格式化前：**
+
+```xml
+<button bind:tap="onTap" catch:touchstart="onTouch" capture-bind:longpress="onLongPress">按钮</button>
+```
+
+**格式化后：**
+
+```xml
+<button
+  bind:tap="onTap"
+  catch:touchstart="onTouch"
+  capture-bind:longpress="onLongPress"
+>
+  按钮
+</button>
+```
+
+### 双花括号表达式保护
+
+**格式化前：**
+
+```xml
+<text>{{user.name + " - " + user.age}}</text><view class="{{isActive ? 'active' : 'inactive'}}">内容</view>
+```
+
+**格式化后：**
+
+```xml
+<text>{{user.name + " - " + user.age}}</text>
+<view class="{{isActive ? 'active' : 'inactive'}}">内容</view>
+```
+
+### 复杂嵌套表达式
+
+**格式化前：**
+
+```xml
+<view class="{{item.status === 'active' ? (item.type === 'vip' ? 'vip-active' : 'normal-active') : 'inactive'}}"><text>{{item.data && item.data.user ? item.data.user.name : '未知用户'}}</text></view>
+```
+
+**格式化后：**
+
+```xml
+<view
+  class="{{item.status === 'active' ? (item.type === 'vip' ? 'vip-active' : 'normal-active') : 'inactive'}}"
+>
+  <text>{{item.data && item.data.user ? item.data.user.name : '未知用户'}}</text>
+</view>
+```
+
+### 自闭合标签格式化
+
+**格式化前：**
+
+```xml
+<view><image src="{{avatar}}" mode="aspectFit"></image><input type="text" placeholder="请输入"></input><icon type="success" size="20"></icon></view>
+```
+
+**格式化后：**
+
+```xml
+<view>
+  <image src="{{avatar}}" mode="aspectFit" />
+  <input type="text" placeholder="请输入" />
+  <icon type="success" size="20" />
+</view>
+```
+
+### 多属性标签换行
+
+**格式化前：**
+
+```xml
+<button class="btn" style="color: red;" bind:tap="onTap" data-id="{{item.id}}" data-type="{{item.type}}" disabled="{{loading}}">提交</button>
+```
+
+**格式化后：**
+
+```xml
+<button
+  class="btn"
+  style="color: red;"
+  bind:tap="onTap"
+  data-id="{{item.id}}"
+  data-type="{{item.type}}"
+  disabled="{{loading}}"
+>
+  提交
+</button>
+```
+
+### 微信小程序组件
+
+**格式化前：**
+
+```xml
+<scroll-view scroll-y="true" class="scroll-area"><swiper indicator-dots="{{true}}" autoplay="{{false}}" interval="{{5000}}"><swiper-item><image src="{{item.url}}" mode="aspectFill"></image></swiper-item></swiper></scroll-view>
+```
+
+**格式化后：**
+
+```xml
+<scroll-view scroll-y="true" class="scroll-area">
+  <swiper
+    indicator-dots="{{true}}"
+    autoplay="{{false}}"
+    interval="{{5000}}"
+  >
+    <swiper-item>
+      <image src="{{item.url}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+</scroll-view>
+```
+
+### 布尔属性保留
+
+**格式化前：**
+
+```xml
+<input type="text" disabled required placeholder="请输入" maxlength="100" />
+```
+
+**格式化后：**
+
+```xml
+<input
+  type="text"
+  disabled
+  required
+  placeholder="请输入"
+  maxlength="100" />
+```
+
+### 长标签换行
+
+**格式化前：**
+
+```xml
+<view class="very-long-class-name-that-makes-the-tag-exceed-100-characters" data-id="12345" style="color: red;">内容</view>
+```
+
+**格式化后：**
+
+```xml
+<view
+  class="very-long-class-name-that-makes-the-tag-exceed-100-characters"
+  data-id="12345"
+  style="color: red;"
+>
+  内容
 </view>
 ```
 

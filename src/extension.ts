@@ -3,9 +3,12 @@ import { WXMLFormatter } from './formatter';
 
 const WXML_SELECTOR: vscode.DocumentSelector = [{ scheme: 'file', pattern: '**/*.wxml' }];
 
-/**
- * Creates a full document range
- */
+/** 检查是否为 .wxml 文件 */
+function isWxmlFile(fileName: string): boolean {
+    return fileName.endsWith('.wxml');
+}
+
+/** 创建完整文档范围 */
 function getFullDocumentRange(document: vscode.TextDocument): vscode.Range {
     return new vscode.Range(
         document.positionAt(0),
@@ -13,9 +16,7 @@ function getFullDocumentRange(document: vscode.TextDocument): vscode.Range {
     );
 }
 
-/**
- * Formats text and handles errors
- */
+/** 格式化文本并处理错误 */
 function formatText(text: string, showSuccessMessage = false): string | null {
     const formatter = new WXMLFormatter();
     try {
@@ -33,7 +34,7 @@ function formatText(text: string, showSuccessMessage = false): string | null {
 export function activate(context: vscode.ExtensionContext) {
     console.log('WXML Formatter extension is now active!');
 
-    // Register format command
+    // 注册格式化命令
     const formatCommand = vscode.commands.registerCommand('wxml-formatter.format', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -41,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        if (!editor.document.fileName.endsWith('.wxml')) {
+        if (!isWxmlFile(editor.document.fileName)) {
             vscode.window.showErrorMessage('This command only works with .wxml files');
             return;
         }
@@ -57,15 +58,12 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    // Register document formatting provider
+    // 注册文档格式化提供者
     const documentFormattingProvider = vscode.languages.registerDocumentFormattingEditProvider(
         WXML_SELECTOR,
         {
             provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-                // Double check: only format .wxml files
-                if (!document.fileName.endsWith('.wxml')) {
-                    return [];
-                }
+                if (!isWxmlFile(document.fileName)) return [];
                 const fullRange = getFullDocumentRange(document);
                 const formattedText = formatText(document.getText());
                 return formattedText ? [vscode.TextEdit.replace(fullRange, formattedText)] : [];
@@ -73,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
     );
 
-    // Register range formatting provider
+    // 注册范围格式化提供者
     const rangeFormattingProvider = vscode.languages.registerDocumentRangeFormattingEditProvider(
         WXML_SELECTOR,
         {
@@ -81,12 +79,8 @@ export function activate(context: vscode.ExtensionContext) {
                 document: vscode.TextDocument,
                 range: vscode.Range
             ): vscode.TextEdit[] {
-                // Double check: only format .wxml files
-                if (!document.fileName.endsWith('.wxml')) {
-                    return [];
-                }
-                const text = document.getText(range);
-                const formattedText = formatText(text);
+                if (!isWxmlFile(document.fileName)) return [];
+                const formattedText = formatText(document.getText(range));
                 return formattedText ? [vscode.TextEdit.replace(range, formattedText)] : [];
             }
         }

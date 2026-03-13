@@ -21,3 +21,10 @@ pnpm-debug.log*
 *.sln
 *.sw?
 *.vsix
+/out
+
+# Test output files
+/test/output/*.wxml
+
+# Build artifacts
+*.tsbuildinfo

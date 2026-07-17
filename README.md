@@ -81,6 +81,26 @@
 - `inlineTags`: 内联标签列表，这些标签的内容不会换行
 - `blockTags`: 块级标签列表，这些标签前后会自动换行
 
+### 当前生效配置
+
+以下选项会真实参与格式化：
+
+- `indentSize`
+- `wrapAttributes`
+- `selfClosingTags`
+- `inlineTags`
+
+### 当前未生效配置（保留声明）
+
+以下选项仍可在设置中看到，但 **1.3.4 起代码不再读取**，格式化行为不受其影响（计划后续实现）：
+
+- `maxLineLength`
+- `preserveNewlines`
+- `alignAttributes`
+- `sortAttributes`
+- `blockTags`
+
+
 ## 支持的WXML语法
 
 - ✅ 微信小程序组件 (view, text, button, image等)

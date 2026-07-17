@@ -1,3 +1,28 @@
+- 时间：2026-07-17
+- 操作类型：[优化]
+- 影响文件：
+  - src/format-core.ts
+  - src/formatter.ts
+  - test/bench.js（新增）
+  - package.json
+  - CHANGELOG.md
+- 变更摘要：性能优化——合并自闭合扫描、静态正则、Set/缩进缓存、短路径跳过、配置缓存；新增 npm run bench。
+- 原因：继续优化提高性能，不改变格式化输出。
+- 测试状态：[已测试] npm test 19/19；bench ~56KB ×50 次约 3.4ms/次
+- 时间：2026-07-17
+- 操作类型：[重构]
+- 影响文件：
+  - src/defaults.ts（新增）
+  - src/format-core.ts（新增）
+  - src/formatter.ts
+  - src/extension.ts
+  - test/formatter.test.js
+  - package.json
+  - CHANGELOG.md
+  - README.md
+- 变更摘要：拆分纯核心 formatWxml；按顺序修复标签长度阈值；测试改为验证 out/format-core；移除 js-beautify；收敛生效配置读取。
+- 原因：正确性与可维护性优化，消除测试与生产双份实现。
+- 测试状态：[已测试] npm test 19/19 通过
 - 时间：2026-01-23 11:54
 - 操作类型：[修改]
 - 影响文件：

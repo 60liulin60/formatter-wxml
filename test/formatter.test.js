@@ -1,372 +1,23 @@
 const fs = require('fs');
 const path = require('path');
 
-// 配置
-const mockConfig = {
-  indentSize: 2,
-  maxLineLength: 120,
-  preserveNewlines: true,
-  wrapAttributes: 3,
-  alignAttributes: true,
-  sortAttributes: false,
-  selfClosingTags: [
-    "image", "input", "icon", "video", "audio", "camera",
-    "live-player", "live-pusher", "map", "canvas", "web-view",
-    "ad", "official-account", "open-data"
-  ],
-  inlineTags: ["text", "icon", "rich-text"],
-  blockTags: [
-    "view", "scroll-view", "swiper", "swiper-item", "movable-area", "movable-view",
-    "cover-view", "cover-image", "page-container", "share-element",
-    "form", "picker", "picker-view", "picker-view-column", "slider", "switch", "textarea",
-    "navigator", "functional-page-navigator", "live-player", "live-pusher",
-    "map", "canvas", "web-view", "ad", "official-account", "open-data",
-    "rich-text", "progress", "button", "checkbox", "radio", "label",
-    "editor", "keyboard-accessory", "match-media", "page-meta", "navigation-bar",
-    "custom-tab-bar", "voip-room", "subscribe", "favorites", "block",
-    "template", "import", "include", "wxs", "slot"
-  ],
-};
+// 直接验证编译后的生产核心，避免与 src 双份实现分叉
+const {
+  formatWxml,
+  createDefaultConfig,
+} = require('../out/format-core');
 
-const EXPR_PLACEHOLDER = "__WXML_EXPR_";
-const DIR_PLACEHOLDER = "__WXML_DIR_";
+/** 测试使用的默认配置（与插件默认一致） */
+const mockConfig = createDefaultConfig();
 
+/** 兼容旧导出：提供 format 方法的薄包装 */
 class WXMLFormatter {
-  constructor() {
-    this.expressions = [];
-    this.directives = [];
-  }
-
-  getConfiguration() {
-    return mockConfig;
-  }
-
   format(text) {
-    this.expressions = [];
-    this.directives = [];
-
-    const config = this.getConfiguration();
-
-    // 在保护语法之前，记录原始标签长度
-    const originalLengths = this.recordOriginalLengths(text);
-
-    let result = this.protectSpecialSyntax(text);
-    result = this.normalizeSelfClosingTags(result, config.selfClosingTags);
-    const tokens = this.tokenize(result);
-    
-    // 添加原始长度信息
-    this.attachOriginalLengths(tokens, originalLengths, text);
-    
-    result = this.buildDocument(tokens, config);
-    result = this.restoreSpecialSyntax(result);
-    result = this.finalCleanup(result);
-
-    return result;
-  }
-
-  recordOriginalLengths(text) {
-    const lengths = new Map();
-    const regex = /<([\w-]+)[^>]*>/g;
-    let match;
-
-    while ((match = regex.exec(text)) !== null) {
-      const fullTag = match[0];
-      const tagName = match[1];
-      const key = `${tagName}_${match.index}`;
-      lengths.set(key, fullTag.length);
-    }
-
-    return lengths;
-  }
-
-  attachOriginalLengths(tokens, lengths, originalText) {
-    // 简化版本：直接使用标签名匹配
-    for (const token of tokens) {
-      if ((token.type === 'open' || token.type === 'selfClose') && token.tagName) {
-        // 尝试从 map 中找到匹配的长度
-        for (const [key, length] of lengths.entries()) {
-          if (key.startsWith(token.tagName + '_')) {
-            token.originalLength = length;
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  protectSpecialSyntax(text) {
-    let result = text;
-
-    result = result.replace(/\{\{[^}]*(?:\{[^}]*\}[^}]*)*\}\}/g, (match) => {
-      const index = this.expressions.length;
-      this.expressions.push(match);
-      return `${EXPR_PLACEHOLDER}${index}__`;
-    });
-
-    result = result.replace(/(wx:|bind:|catch:|capture-bind:|capture-catch:)[\w-]+/g, (match) => {
-      const index = this.directives.length;
-      this.directives.push(match);
-      return `${DIR_PLACEHOLDER}${index}__`;
-    });
-
-    return result;
-  }
-
-  restoreSpecialSyntax(text) {
-    let result = text;
-
-    result = result.replace(new RegExp(`${DIR_PLACEHOLDER}(\\d+)__`, 'g'), (_, index) => {
-      return this.directives[parseInt(index)] || _;
-    });
-
-    result = result.replace(new RegExp(`${EXPR_PLACEHOLDER}(\\d+)__`, 'g'), (_, index) => {
-      return this.expressions[parseInt(index)] || _;
-    });
-
-    return result;
-  }
-
-  normalizeSelfClosingTags(text, selfClosingTags) {
-    let result = text;
-
-    for (const tagName of selfClosingTags) {
-      // 成对标签转自闭合（使用正向预查确保完整标签名匹配）
-      // 注意：(?=[\s/>]) 确保标签名后必须是空格、/ 或 >，避免匹配到前缀相同的标签
-      result = result.replace(
-        new RegExp(`<${tagName}(?=[\\s/>])(\\s[^>]*?)?></${tagName}>`, 'g'),
-        (_, attrs) => `<${tagName}${attrs || ''} />`
-      );
-
-      // 规范化自闭合标签格式（确保标签名后是空格才能匹配）
-      result = result.replace(
-        new RegExp(`<${tagName}(?=\\s)(\\s[^>]*)\\s*/>`, 'g'),
-        (_, attrs) => {
-          const trimmed = attrs.trim();
-          return trimmed ? `<${tagName} ${trimmed} />` : `<${tagName} />`;
-        }
-      );
-    }
-
-    return result;
-  }
-
-  tokenize(text) {
-    const tokens = [];
-    const cleaned = text.replace(/\s+/g, ' ').trim();
-    
-    const regex = /<!\-\-[\s\S]*?\-\->|<\/[\w-]+\s*>|<[\w-]+[^>]*\/\s*>|<[\w-]+[^>]*\s*>|[^<]+|</g;
-    let match;
-
-    while ((match = regex.exec(cleaned)) !== null) {
-      const raw = match[0].trim();
-      if (!raw) continue;
-
-      const content = raw.startsWith('<')
-        ? raw.replace(/\/\s*>$/, '/>').replace(/\s+>$/, '>')
-        : raw;
-
-      if (content.startsWith('<!--')) {
-        tokens.push({ type: 'comment', content });
-      } else if (content === '<') {
-        tokens.push({ type: 'text', content });
-      } else if (content.startsWith('</')) {
-        const tagName = content.match(/<\/([\w-]+)/)?.[1] || '';
-        tokens.push({ type: 'close', content, tagName });
-      } else if (/\/>$/.test(content)) {
-        const tagNameMatch = content.match(/<([\w-]+)/);
-        if (!tagNameMatch) {
-          tokens.push({ type: 'text', content });
-          continue;
-        }
-        const tagName = tagNameMatch[1] || '';
-        const attrStr = content.slice(tagName.length + 1, -2);
-        tokens.push({
-          type: 'selfClose',
-          content,
-          tagName,
-          attributes: this.parseAttributes(attrStr)
-        });
-      } else if (content.startsWith('<')) {
-        const tagNameMatch = content.match(/<([\w-]+)/);
-        if (!tagNameMatch) {
-          tokens.push({ type: 'text', content });
-          continue;
-        }
-        const tagName = tagNameMatch[1] || '';
-        const attrStr = content.slice(tagName.length + 1, -1);
-        tokens.push({
-          type: 'open',
-          content,
-          tagName,
-          attributes: this.parseAttributes(attrStr)
-        });
-      } else {
-        tokens.push({ type: 'text', content });
-      }
-    }
-
-    return tokens;
-  }
-
-  buildDocument(tokens, config) {
-    const lines = [];
-    const indent = ' '.repeat(config.indentSize);
-    let depth = 0;
-
-    for (let i = 0; i < tokens.length; i++) {
-      const token = tokens[i];
-      const nextToken = tokens[i + 1];
-      const nextNextToken = tokens[i + 2];
-
-      if (token.type === 'close') {
-        depth = Math.max(0, depth - 1);
-        lines.push(indent.repeat(depth) + token.content);
-        continue;
-      }
-
-      // 判断是否需要多行显示：属性数量 >= 3 或 标签长度 > 100
-      const shouldWrapAttributes = (token, config) => {
-        if (!token.attributes || token.attributes.length === 0) return false;
-        // 条件1：属性数量 >= 3
-        if (token.attributes.length >= config.wrapAttributes) return true;
-        // 条件2：标签原始长度 > 100
-        if (token.originalLength && token.originalLength > 100) return true;
-        return false;
-      };
-
-      if (
-        token.type === 'open' &&
-        token.tagName === 'text' &&
-        shouldWrapAttributes(token, config) &&
-        nextToken?.type === 'text' &&
-        nextNextToken?.type === 'close' &&
-        nextNextToken.tagName === token.tagName
-      ) {
-        lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        for (let j = 0; j < token.attributes.length; j++) {
-          const attr = token.attributes[j];
-          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          lines.push(indent.repeat(depth + 1) + `${attrStr}`);
-        }
-        lines.push(indent.repeat(depth) + `>${nextToken.content}${nextNextToken.content}`);
-        i += 2;
-        continue;
-      }
-
-      // 处理多属性开始标签（优先级高于短文本）
-      if (token.type === 'open' && shouldWrapAttributes(token, config)) {
-        const shouldInlineAfterWrapped =
-          nextToken?.type === 'text' &&
-          nextNextToken?.type === 'close' &&
-          nextNextToken.tagName === token.tagName &&
-          config.inlineTags.includes(token.tagName || '');
-
-        // 多行显示属性
-        lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        for (let j = 0; j < token.attributes.length; j++) {
-          const attr = token.attributes[j];
-          const isLast = j === token.attributes.length - 1;
-          // 布尔属性（value 为空）只输出属性名
-          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          if (isLast) {
-            if (shouldInlineAfterWrapped) {
-              lines.push(indent.repeat(depth + 1) + `${attrStr}>${nextToken.content}${nextNextToken.content}`);
-            } else {
-              lines.push(indent.repeat(depth + 1) + `${attrStr}`);
-            }
-          } else {
-            lines.push(indent.repeat(depth + 1) + `${attrStr}`);
-          }
-        }
-
-        if (shouldInlineAfterWrapped) {
-          i += 2;
-          continue;
-        }
-
-        lines.push(indent.repeat(depth) + '>');
-
-        depth++;
-        continue;
-      }
-
-      // 内联标签
-      if (token.type === 'open' && 
-          config.inlineTags.includes(token.tagName || '') &&
-          nextToken?.type === 'text' &&
-          nextNextToken?.type === 'close' &&
-          nextNextToken.tagName === token.tagName) {
-        lines.push(indent.repeat(depth) + token.content + nextToken.content + nextNextToken.content);
-        i += 2;
-        continue;
-      }
-
-      // 短文本保持同行
-      if (token.type === 'open' &&
-          nextToken?.type === 'text' &&
-          nextNextToken?.type === 'close' &&
-          nextNextToken.tagName === token.tagName &&
-          nextToken.content.length <= 50) {
-        lines.push(indent.repeat(depth) + token.content + nextToken.content + nextNextToken.content);
-        i += 2;
-        continue;
-      }
-
-      // 多属性自闭合标签
-      if (token.type === 'selfClose' && shouldWrapAttributes(token, config)) {
-        lines.push(indent.repeat(depth) + `<${token.tagName}`);
-        for (let j = 0; j < token.attributes.length; j++) {
-          const attr = token.attributes[j];
-          const isLast = j === token.attributes.length - 1;
-          // 布尔属性（value 为空）只输出属性名
-          const attrStr = attr.value ? `${attr.name}=${attr.value}` : attr.name;
-          lines.push(indent.repeat(depth + 1) + `${attrStr}${isLast ? ' />' : ''}`);
-        }
-        continue;
-      }
-
-      lines.push(indent.repeat(depth) + token.content);
-
-      if (token.type === 'open') {
-        depth++;
-      }
-    }
-
-    return lines.join('\n') + '\n';
-  }
-
-  parseAttributes(attrString) {
-    const attrs = [];
-    const cleaned = attrString.replace(/\s+/g, ' ').trim();
-    
-    if (!cleaned) return attrs;
-    
-    // 支持普通属性、占位符属性和布尔属性
-    // 匹配: name="value" 或 name='value' 或 name (布尔属性)
-    const regex = /([\w-:]+|__WXML_\w+_\d+__)(?:=("[^"]*"|'[^']*'))?/g;
-    let match;
-
-    while ((match = regex.exec(cleaned)) !== null) {
-      const name = match[1];
-      const value = match[2] || ''; // 布尔属性没有值
-      attrs.push({ name, value });
-    }
-
-    return attrs;
-  }
-
-  finalCleanup(text) {
-    let result = text;
-    result = result.replace(/<([\w-]+)([a-zA-Z][^=\s>]*=)/g, '<$1 $2');
-    result = result.replace(
-      /(wx:|bind:|catch:|capture-bind:|capture-catch:)(\w+)(\s*=\s*)(['"])/g,
-      '$1$2=$4'
-    );
-    return result;
+    return formatWxml(text, mockConfig);
   }
 }
 
-// 测试用例
+// 测试用例（含 expected 的做严格比对）
 const testCases = [
   {
     name: '简单WXML格式化',
@@ -464,8 +115,7 @@ const testCases = [
     name: '长标签换行测试',
     input: '<view class="very-long-class-name-that-makes-the-tag-exceed-100-characters" data-id="12345" style="color: red;">内容</view>',
     description: '测试标签长度超过100字符时的换行',
-  }
-  ,
+  },
   {
     name: '标签结束符号不在同一行格式化问题',
     input: '<text class="tip-wrap cashback-wrap" wx:if="{{item.incomeSource && item.incomeSource === \'platform_cashback\'}}" >限时奖励</text>',
@@ -506,6 +156,21 @@ const testCases = [
     description: '测试 text 标签属性少于3且标签长度不超过100时保持单行',
     expected: `<text class="tip-wrap cashback-wrap">限时奖励</text>
 `
+  },
+  {
+    name: '同名标签多次出现时长度阈值仍正确',
+    input: '<view class="short"><text class="a">一</text></view><view class="very-long-class-name-that-makes-the-tag-exceed-100-characters-xxxxxxxxxxxx" data-id="1">二</view>',
+    description: '覆盖原 originalLength 按位置匹配失败：两个 view 中仅超长者应属性换行',
+    expected: `<view class="short">
+  <text class="a">一</text>
+</view>
+<view
+  class="very-long-class-name-that-makes-the-tag-exceed-100-characters-xxxxxxxxxxxx"
+  data-id="1"
+>
+  二
+</view>
+`
   }
 ];
 
@@ -513,51 +178,55 @@ const testCases = [
 function runTests() {
   const formatter = new WXMLFormatter();
   const outputDir = path.join(__dirname, 'output');
-  
+
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
-  
-  console.log('🧪 开始运行WXML格式化器测试...\n');
-  
+
+  console.log('开始运行 WXML 格式化器测试...\n');
+
   let passed = 0;
   let failed = 0;
-  
+
   testCases.forEach((testCase, index) => {
-    console.log(`📝 测试 ${index + 1}: ${testCase.name}`);
-    console.log(`📋 描述: ${testCase.description}`);
-    console.log('📥 输入:');
+    console.log(`测试 ${index + 1}: ${testCase.name}`);
+    console.log(`描述: ${testCase.description}`);
+    console.log('输入:');
     console.log(testCase.input);
-    
+
     try {
       const formatted = formatter.format(testCase.input);
-      console.log('📤 输出:');
+      console.log('输出:');
       console.log(formatted);
-      
-      const outputFile = path.join(outputDir, `test-${index + 1}-${testCase.name.replace(/\s+/g, '-')}.wxml`);
-      fs.writeFileSync(outputFile, formatted);
-      console.log(`💾 结果已保存到: ${outputFile}`);
-      
+
+      const safeName = testCase.name.replace(/[\\/:*?"<>|]/g, '-').replace(/\s+/g, '-');
+      const outputFile = path.join(outputDir, `test-${index + 1}-${safeName}.wxml`);
+      fs.writeFileSync(outputFile, formatted, 'utf8');
+      console.log(`结果已保存到: ${outputFile}`);
+
       if (testCase.expected && formatted !== testCase.expected) {
-        console.log('❌ 测试失败: 输出与期望不符');
+        console.log('测试失败: 输出与期望不符');
         console.log('期望:');
         console.log(testCase.expected);
-        failed++;
+        failed += 1;
       } else {
-        console.log('✅ 测试通过\n');
-        passed++;
+        console.log('测试通过\n');
+        passed += 1;
       }
     } catch (error) {
-      console.log(`❌ 测试失败: ${error.message}\n`);
-      failed++;
+      console.log(`测试失败: ${error.message}\n`);
+      failed += 1;
     }
   });
-  
-  console.log(`🎉 测试完成！通过: ${passed}, 失败: ${failed}`);
+
+  console.log(`测试完成！通过: ${passed}, 失败: ${failed}`);
+  if (failed > 0) {
+    process.exitCode = 1;
+  }
 }
 
 if (require.main === module) {
   runTests();
 }
 
-module.exports = { WXMLFormatter, testCases, runTests };
+module.exports = { WXMLFormatter, formatWxml, createDefaultConfig, testCases, runTests };

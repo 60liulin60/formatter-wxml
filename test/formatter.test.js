@@ -171,6 +171,32 @@ const testCases = [
   二
 </view>
 `
+  },
+  {
+    name: '注释伪标签不污染长度判定',
+    input: `<!-- <view class="${'x'.repeat(120)}"> --><view class="short">内容</view>`,
+    description: '测试注释内的超长伪标签不会使后续短标签误换行',
+    expected: `<!-- <view class="${'x'.repeat(120)}"> -->
+<view class="short">内容</view>
+`
+  },
+  {
+    name: '属性值包含大于号',
+    input: '<view data-text="a > b"><text>x</text></view>',
+    description: '测试引号内的大于号不会提前截断开始标签',
+    expected: `<view data-text="a > b">
+  <text>x</text>
+</view>
+`
+  },
+  {
+    name: '表达式与事件指令直接解析',
+    input: '<view wx:if="{{count > 0}}" bind:tap="handleTap"><text>{{user.name}}</text></view>',
+    description: '测试不使用占位符时仍能完整保留表达式与指令名',
+    expected: `<view wx:if="{{count > 0}}" bind:tap="handleTap">
+  <text>{{user.name}}</text>
+</view>
+`
   }
 ];
 
@@ -204,10 +230,15 @@ function runTests() {
       fs.writeFileSync(outputFile, formatted, 'utf8');
       console.log(`结果已保存到: ${outputFile}`);
 
+      // 所有用例都验证二次格式化稳定，防止输出逐次漂移
+      const reformatted = formatter.format(formatted);
       if (testCase.expected && formatted !== testCase.expected) {
         console.log('测试失败: 输出与期望不符');
         console.log('期望:');
         console.log(testCase.expected);
+        failed += 1;
+      } else if (reformatted !== formatted) {
+        console.log('测试失败: 二次格式化结果不一致');
         failed += 1;
       } else {
         console.log('测试通过\n');

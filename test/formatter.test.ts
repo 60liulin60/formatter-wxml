@@ -6,6 +6,7 @@ import {
   formatWxml,
   trimTrailingNewlines,
 } from '../src/format-core';
+import type { FormatterConfig } from '../src/defaults';
 
 /** 测试使用的默认配置（与插件默认一致） */
 const mockConfig = createDefaultConfig();
@@ -324,6 +325,139 @@ describe('WXML 格式化', () => {
   it.each(testCases)('$name 二次格式化保持稳定', ({ input }) => {
     const once = format(input);
     expect(format(once)).toBe(once);
+  });
+});
+
+/** 一行多个属性的用例配置覆盖项 */
+type PackOverrides = Partial<
+  Pick<
+    FormatterConfig,
+    'packAttributes' | 'attributesPerLine' | 'attributeLineWidth'
+  >
+>;
+
+interface PackCase {
+  name: string;
+  input: string;
+  expected: string;
+  config?: PackOverrides;
+}
+
+/**
+ * 开启「一行多个属性」后的回归用例。
+ * 数量与宽度任一超限就换行，续行继续按数量 / 宽度贪心分组。
+ */
+const packTestCases: PackCase[] = [
+  {
+    name: '装得下时保持一行',
+    input: '<view class="a" data-id="1">x</view>',
+    expected: `<view class="a" data-id="1">x</view>
+`,
+  },
+  {
+    name: '超过每行数量后换行并继续多个',
+    input: '<view a="1" b="2" c="3" d="4" e="5">x</view>',
+    expected: `<view a="1" b="2" c="3"
+  d="4" e="5"
+>
+  x
+</view>
+`,
+  },
+  {
+    name: '宽度不足时按宽度换行并继续多个',
+    input:
+      '<view aaaa="1111111111" bbbb="2222222222" cccc="3333333333" dddd="4444444444" eeee="5555555555">x</view>',
+    config: { attributeLineWidth: 55 },
+    expected: `<view aaaa="1111111111" bbbb="2222222222"
+  cccc="3333333333" dddd="4444444444" eeee="5555555555"
+>
+  x
+</view>
+`,
+  },
+  {
+    name: '单个属性超宽时独占一行',
+    input: `<view class="x" data-long="${'y'.repeat(120)}">t</view>`,
+    config: { attributeLineWidth: 55 },
+    expected: `<view class="x"
+  data-long="${'y'.repeat(120)}"
+>
+  t
+</view>
+`,
+  },
+  {
+    name: '数量与宽度为 0 时不限',
+    input:
+      '<view aaaa="1111111111" bbbb="2222222222" cccc="3333333333" dddd="4444444444" eeee="5555555555">x</view>',
+    config: { attributesPerLine: 0, attributeLineWidth: 0 },
+    expected: `<view aaaa="1111111111" bbbb="2222222222" cccc="3333333333" dddd="4444444444" eeee="5555555555">x</view>
+`,
+  },
+  {
+    name: 'text 标签跨行后内容仍与末属性行收口',
+    input:
+      '<text class="title" data-id="1" bind:tap="onTap" style="color:red">这是文本内容</text>',
+    expected: `<text class="title" data-id="1" bind:tap="onTap"
+  style="color:red"
+>这是文本内容</text>
+`,
+  },
+  {
+    name: '自闭合标签跨行后收口符号跟随末行',
+    input:
+      '<image src="{{a}}" mode="aspectFill" class="avatar" lazy-load="{{true}}" />',
+    expected: `<image src="{{a}}" mode="aspectFill" class="avatar"
+  lazy-load="{{true}}" />
+`,
+  },
+  {
+    name: '嵌套标签按各自缩进分组',
+    input:
+      '<view class="outer" a="1" b="2"><view class="inner" c="3" d="4">x</view></view>',
+    config: { attributesPerLine: 2 },
+    expected: `<view class="outer" a="1"
+  b="2"
+>
+  <view class="inner" c="3"
+    d="4"
+  >
+    x
+  </view>
+</view>
+`,
+  },
+  {
+    name: '关闭开关时保持每行一个属性',
+    input: '<view a="1" b="2" c="3" d="4">x</view>',
+    config: { packAttributes: false },
+    expected: `<view
+  a="1"
+  b="2"
+  c="3"
+  d="4"
+>
+  x
+</view>
+`,
+  },
+];
+
+/** 按用例覆盖项运行一行多个属性格式化（默认开启） */
+function runPackCase(input: string, config?: PackOverrides): string {
+  return formatWxml(input, { ...mockConfig, packAttributes: true, ...config });
+}
+
+describe('一行多个属性', () => {
+  it.each(packTestCases)('$name', ({ name, input, expected, config }) => {
+    expect(runPackCase(input, config), name).toBe(expected);
+  });
+
+  // 换行后的输出再格式化一次不应继续漂移
+  it.each(packTestCases)('$name 二次格式化保持稳定', ({ input, config }) => {
+    const once = runPackCase(input, config);
+    expect(runPackCase(once, config)).toBe(once);
   });
 });
 

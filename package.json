@@ -96,7 +96,24 @@
         "wxml-formatter.wrapAttributes": {
           "type": "number",
           "default": 3,
-          "description": "超过多少个属性时换行"
+          "description": "属性数达到该值时换行（packAttributes 开启后不生效）"
+        },
+        "wxml-formatter.packAttributes": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否开启一行多个属性；开启后按每行属性数与属性行宽度排版"
+        },
+        "wxml-formatter.attributesPerLine": {
+          "type": "number",
+          "default": 3,
+          "minimum": 0,
+          "description": "一行多个属性时每行最多属性个数；0 表示不限制"
+        },
+        "wxml-formatter.attributeLineWidth": {
+          "type": "number",
+          "default": 100,
+          "minimum": 0,
+          "description": "一行多个属性时属性行最大宽度（字符数）；0 表示不限制"
         },
         "wxml-formatter.alignAttributes": {
           "type": "boolean",

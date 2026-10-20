@@ -1,4 +1,19 @@
 - 时间：2026-10-20
+- 操作类型：[新增]
+- 影响文件：
+  - src/defaults.ts
+  - src/format-core.ts
+  - src/formatter.ts
+  - package.json
+  - test/formatter.test.ts
+  - README.md
+  - CHANGELOG.md
+  - operateLog.md
+- 变更摘要：新增「一行多个属性」配置 packAttributes（默认关闭）、attributesPerLine（默认 3）、attributeLineWidth（默认 100）。开启后 buildDocument 通过 packAttributeRows 按「每行数量 + 行宽」贪心分组：首行与 <标签名 同行，超限换行后继续多个；text 的 >内容</text> 与自闭合的 /> 仍跟随末属性行收口，单个超宽属性独占一行；packAttributes 开启时忽略 wrapAttributes 与 100 字符阈值。新增 9 个用例（数量换行、宽度换行、超宽独占、0 不限、text 收口、自闭合收口、嵌套缩进、关闭开关）及幂等校验。
+- 原因：用户要求可通过配置开启「一行多个属性」，并支持设置每行属性数量与行宽，数量或宽度超出后第二行继续一行多个。
+- 测试状态：[已测试] npm test 69/69 通过（22 格式化 + 22 幂等 + 18 一行多个 + 7 辅助）；npm run typecheck 通过；npm run compile 通过；npm run compile-web 通过（dist/extension.js 7.53 KiB）。
+
+- 时间：2026-10-20
 - 操作类型：[文档]
 - 影响文件：
   - README.md

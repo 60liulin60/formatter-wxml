@@ -1,4 +1,15 @@
 - 时间：2026-10-20
+- 操作类型：[文档]
+- 影响文件：
+  - README.md
+  - CHANGELOG.md
+  - .gitignore
+  - operateLog.md
+- 变更摘要：README「环境准备」补充 peer 依赖冲突说明——@types/node 固定 16.x 对应 VS Code 1.74 的 Node 16 运行时，与 Vitest 的 peerOptional 要求 ^18 || ^20 || >=22 相撞会让 npm install 报 ERESOLVE；给出本地 .npmrc（legacy-peer-deps=true）与单次 --legacy-peer-deps 两种解法，并说明不要把 @types/node 升到 18+ 规避。.gitignore 增加 .npmrc 忽略规则，避免该文件（npm 存放 registry token 的默认位置）被误提交。
+- 原因：测试框架迁移到 Vitest 后，新环境克隆仓库直接 npm install 会失败，但仓库内没有对应说明；本地 .npmrc 若入库还有泄露凭据的风险。
+- 测试状态：[已测试] npm install --dry-run 退出码 0，无 ERESOLVE；npm test 51/51 通过。
+- 说明：本机 .npmrc 由用户手动创建（工具写入被安全策略 secret.basename.npmrc 规则拦截），内容 23 字节，npm config get legacy-peer-deps 返回 true。
+- 时间：2026-10-20
 - 操作类型：[重构]
 - 影响文件：
   - test/formatter.test.ts（新增，替代 test/formatter.test.js）

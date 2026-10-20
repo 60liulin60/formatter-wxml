@@ -20,6 +20,7 @@
 
 ### 仓库维护
 
+- 📝 README 补充 peer 依赖冲突说明：`@types/node` 固定 16.x 与 Vitest 的 `^18 || ^20 || >=22` 要求相撞会导致 `ERESOLVE`，给出本地 `.npmrc` 与单次 `--legacy-peer-deps` 两种解法
 - 🧹 取消跟踪 `test/output/` 下 22 个由测试运行生成的 `.wxml` 产物，与 `.gitignore` 规则保持一致
 
 ### 计划中的功能

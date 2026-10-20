@@ -216,6 +216,18 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 npm install          # 当前仓库未包含 node_modules，需自行安装
 ```
 
+> **peer 依赖冲突说明**：本项目的 `@types/node` 固定在 16.x，对应 VS Code 1.74 的真实 Node 16 运行时；而 Vitest 对它的要求是 `^18 || ^20 || >=22`（`peerOptional`，仅影响类型，运行时不受影响）。两者相撞会让 `npm install` 直接报 `ERESOLVE` 失败。
+>
+> 解决办法是在仓库根目录放一个 `.npmrc`（不入库，已被 `.gitignore` 忽略）：
+>
+> ```ini
+> legacy-peer-deps=true
+> ```
+>
+> 或者单次安装时带参数：`npm install --legacy-peer-deps`。**不要**把 `@types/node` 升到 18+ 来规避——那会让代码误用 Node 16 运行时不存在的 API。
+>
+> `.npmrc` 也是 npm 存放 registry token 的默认位置，因此这个文件不入库，不要把凭据写进去。
+
 ### 常用命令
 
 ```powershell

@@ -30,5 +30,8 @@ pnpm-debug.log*
 .vitest/
 coverage/
 
+# npm 本地配置（可能含 registry token，仅保留在本地）
+.npmrc
+
 # Build artifacts
 *.tsbuildinfo

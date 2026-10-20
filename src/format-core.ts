@@ -481,3 +481,31 @@ function finalCleanup(text: string): string {
   result = result.replace(DIR_EQ_RE, "$1$2=$4");
   return result;
 }
+
+/**
+ * 去掉格式化结果尾部的换行
+ *
+ * formatWxml 恒定以单个换行结尾，整篇替换时这是正确收口；
+ * 但替换非整篇范围时该换行会落到范围之外，多出一个空行。
+ */
+export function trimTrailingNewlines(text: string): string {
+  return text.replace(/[\r\n]+$/, "");
+}
+
+/**
+ * 为每个非空行补上基准缩进
+ *
+ * 选区格式化时选区被当作独立文档从深度 0 重建，
+ * 需要补回选区首行原有的缩进，才能保持其在父结构中的层级。
+ * @param text 已格式化的文本，每行均从列 0 开始
+ * @param baseIndent 选区首行的原始前导缩进
+ */
+export function applyBaseIndent(text: string, baseIndent: string): string {
+  if (!baseIndent) {
+    return text;
+  }
+  return text
+    .split("\n")
+    .map((line) => (line.length > 0 ? baseIndent + line : line))
+    .join("\n");
+}

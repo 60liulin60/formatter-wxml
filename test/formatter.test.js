@@ -5,6 +5,8 @@ const path = require('path');
 const {
   formatWxml,
   createDefaultConfig,
+  applyBaseIndent,
+  trimTrailingNewlines,
 } = require('../out/format-core');
 
 /** 测试使用的默认配置（与插件默认一致） */
@@ -200,6 +202,51 @@ const testCases = [
   }
 ];
 
+// 选区格式化辅助函数的回归用例
+// 这两个函数保证「选区格式化不丢层级缩进」，见 src/format-core.ts
+const rangeHelperCases = [
+  {
+    name: 'trimTrailingNewlines 去掉尾部换行',
+    actual: () => trimTrailingNewlines('<view />\n'),
+    expected: '<view />'
+  },
+  {
+    name: 'trimTrailingNewlines 去掉多个尾部换行',
+    actual: () => trimTrailingNewlines('<view />\n\n\n'),
+    expected: '<view />'
+  },
+  {
+    name: 'trimTrailingNewlines 保留中间换行',
+    actual: () => trimTrailingNewlines('a\nb\n'),
+    expected: 'a\nb'
+  },
+  {
+    name: 'applyBaseIndent 为每个非空行补缩进',
+    actual: () => applyBaseIndent('<view>\n  <text>x</text>\n</view>', '    '),
+    expected: '    <view>\n      <text>x</text>\n    </view>'
+  },
+  {
+    name: 'applyBaseIndent 跳过空行不补缩进',
+    actual: () => applyBaseIndent('a\n\nb', '  '),
+    expected: '  a\n\n  b'
+  },
+  {
+    name: 'applyBaseIndent 基准缩进为空时原样返回',
+    actual: () => applyBaseIndent('<view />', ''),
+    expected: '<view />'
+  },
+  {
+    name: '选区格式化保留基准缩进（端到端模拟）',
+    // 模拟：选区两行缩进 2 空格 → 格式化 → 收回基准缩进
+    actual: () =>
+      applyBaseIndent(
+        trimTrailingNewlines(formatWxml('  <text>a</text>\n  <text>b</text>')),
+        '  '
+      ),
+    expected: '  <text>a</text>\n  <text>b</text>'
+  }
+];
+
 // 运行测试
 function runTests() {
   const formatter = new WXMLFormatter();
@@ -250,14 +297,41 @@ function runTests() {
     }
   });
 
+  rangeHelperCases.forEach((testCase, index) => {
+    console.log(`辅助测试 ${index + 1}: ${testCase.name}`);
+    try {
+      const actual = testCase.actual();
+      if (actual !== testCase.expected) {
+        console.log('测试失败: 输出与期望不符');
+        console.log(`期望: ${JSON.stringify(testCase.expected)}`);
+        console.log(`实际: ${JSON.stringify(actual)}\n`);
+        failed += 1;
+      } else {
+        console.log('测试通过\n');
+        passed += 1;
+      }
+    } catch (error) {
+      console.log(`测试失败: ${error.message}\n`);
+      failed += 1;
+    }
+  });
+
   console.log(`测试完成！通过: ${passed}, 失败: ${failed}`);
   if (failed > 0) {
     process.exitCode = 1;
   }
 }
-
 if (require.main === module) {
   runTests();
 }
 
-module.exports = { WXMLFormatter, formatWxml, createDefaultConfig, testCases, runTests };
+module.exports = {
+  WXMLFormatter,
+  formatWxml,
+  createDefaultConfig,
+  applyBaseIndent,
+  trimTrailingNewlines,
+  testCases,
+  rangeHelperCases,
+  runTests
+};

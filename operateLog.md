@@ -1,4 +1,16 @@
 - 时间：2026-10-20
+- 操作类型：[修复]
+- 影响文件：
+  - src/format-core.ts
+  - src/extension.ts
+  - test/formatter.test.js
+  - README.md
+  - CHANGELOG.md
+  - operateLog.md
+- 变更摘要：修复选区格式化丢失基准缩进——选区改为扩展到整行后格式化，再用新增的纯函数 applyBaseIndent 逐行补回选区首行缩进；用 trimTrailingNewlines 去掉尾部换行，避免替换范围外多出空行；选区格式化结果为空时不做替换，避免误删行。新增 7 个辅助函数回归用例。
+- 原因：原实现把选区当独立文档从深度 0 格式化，嵌套块被拍平到左边界；且替换非整篇范围时尾部换行落到范围外产生空行。
+- 测试状态：[已测试] npm test 29/29 通过；npm run compile-web 通过。
+- 时间：2026-10-20
 - 操作类型：[文档]
 - 影响文件：
   - README.md

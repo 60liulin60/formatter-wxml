@@ -1,3 +1,13 @@
+- 时间：2026-10-20
+- 操作类型：[文档]
+- 影响文件：
+  - README.md
+  - INSTALL.md（删除）
+  - test/README.md（删除）
+  - operateLog.md
+- 变更摘要：删除两份与仓库实际状态严重不符的过时文档（INSTALL.md、test/README.md），把其中仍有效的安装/开发/发布信息合并进 README；重写 README，修正 1.3.5 后已过时的「占位保护/还原」主流程描述，补充格式化规则优先级表、硬编码阈值、已知限制、准确的目录结构与测试说明。
+- 原因：INSTALL.md 与 test/README.md 引用的 run-tests.js、quick-test.js、test-hyphenated-tags.js、bugLog/、otherMd/ 以及 test:unit/test:files/test:performance 等脚本均不存在，照做会直接失败；README 中「表达式保护」「主流程」两节仍停留在 1.3.4 之前，与现有 token 管线不符。
+- 测试状态：[无需代码测试] 仅文档变更，未改动 src/；因仓库缺少 node_modules 未执行 npm test。
 - 时间：2026-07-17
 - 操作类型：[优化]
 - 影响文件：

@@ -1,3 +1,44 @@
+- 时间：2026-07-17
+- 操作类型：[优化]
+- 影响文件：
+  - src/format-core.ts
+  - test/formatter.test.js
+  - operateLog.md
+- 变更摘要：将占位保护、正则分词、标签长度二次对齐和自闭合全文替换收敛为引号感知的单次扫描与 token 级合并；修复注释伪标签污染长度判定、属性值内大于号截断标签问题；新增边界回归与幂等测试。
+- 原因：用户要求在保持正常输出和公共 API 不变的前提下，同时提升格式化稳健性与性能。
+- 测试状态：[已测试] npm test 22/22；npm run compile-web 通过；原有输出逐字节无差异；56.8KB 基准 5 次中位数约 2.656ms，较 3.428ms 基线提升约 22.5%。
+- 时间：2026-07-17
+- 操作类型：[文档]
+- 影响文件：
+  - README.md
+- 变更摘要：按 1.3.5 现状重写 README：生效/未生效配置、架构、开发命令、text/自闭合示例、FAQ。
+- 原因：用户要求更新 README。
+- 测试状态：[无需代码测试]
+- 时间：2026-07-17
+- 操作类型：[优化]
+- 影响文件：
+  - src/format-core.ts
+  - src/formatter.ts
+  - test/bench.js（新增）
+  - package.json
+  - CHANGELOG.md
+- 变更摘要：性能优化——合并自闭合扫描、静态正则、Set/缩进缓存、短路径跳过、配置缓存；新增 npm run bench。
+- 原因：继续优化提高性能，不改变格式化输出。
+- 测试状态：[已测试] npm test 19/19；bench ~56KB ×50 次约 3.4ms/次
+- 时间：2026-07-17
+- 操作类型：[重构]
+- 影响文件：
+  - src/defaults.ts（新增）
+  - src/format-core.ts（新增）
+  - src/formatter.ts
+  - src/extension.ts
+  - test/formatter.test.js
+  - package.json
+  - CHANGELOG.md
+  - README.md
+- 变更摘要：拆分纯核心 formatWxml；按顺序修复标签长度阈值；测试改为验证 out/format-core；移除 js-beautify；收敛生效配置读取。
+- 原因：正确性与可维护性优化，消除测试与生产双份实现。
+- 测试状态：[已测试] npm test 19/19 通过
 - 时间：2026-01-23 11:54
 - 操作类型：[修改]
 - 影响文件：

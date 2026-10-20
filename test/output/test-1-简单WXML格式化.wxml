@@ -1,4 +1,0 @@
-<view class="container">
-  <text wx:if="{{show}}">Hello World</text>
-  <button bind:tap="onTap" class="btn">Click Me</button>
-</view>

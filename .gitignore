@@ -24,7 +24,11 @@ pnpm-debug.log*
 /out
 
 # Test output files
-/test/output/*.wxml
+/test/output/
+
+# Vitest
+.vitest/
+coverage/
 
 # Build artifacts
 *.tsbuildinfo

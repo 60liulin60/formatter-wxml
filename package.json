@@ -8,10 +8,12 @@
   "scripts": {
     "vscode:prepublish": "npm run compile-web",
     "compile": "tsc -p ./",
+    "typecheck": "tsc --noEmit -p ./",
     "watch": "tsc -watch -p ./",
     "compile-web": "webpack --mode production --devtool hidden-source-map",
     "watch-web": "webpack --mode development --watch",
-    "test": "npm run compile && node test/formatter.test.js",
+    "test": "npm run typecheck && vitest run",
+    "test:watch": "vitest",
     "package": "vsce package",
     "package:pre-release": "vsce package --pre-release",
     "publish": "vsce publish",
@@ -23,6 +25,7 @@
     "@types/vscode": "^1.74.0",
     "ts-loader": "^9.5.2",
     "typescript": "^4.9.4",
+    "vitest": "^3.2.7",
     "vsce": "^2.15.0",
     "webpack": "^5.100.2",
     "webpack-cli": "^6.0.1"

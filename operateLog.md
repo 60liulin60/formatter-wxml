@@ -1,4 +1,22 @@
 - 时间：2026-10-20
+- 操作类型：[重构]
+- 影响文件：
+  - test/formatter.test.ts（新增，替代 test/formatter.test.js）
+  - test/formatter.test.js（删除）
+  - vitest.config.mts（新增）
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - .gitignore
+  - README.md
+  - CHANGELOG.md
+  - operateLog.md
+- 变更摘要：测试框架从手写 console.log 跑器迁移到 Vitest 3.2.7。测试直接 import src/format-core（Vitest 就地转译 TS），不再依赖 tsc 产物 out/；用例改写为 describe / it.each / expect，新增 npm run typecheck（tsc --noEmit）并接入 npm test；原先只校验幂等的 10 个用例补齐人工审定的 expected；tsconfig 增加 include: ["src"] 与 exclude: ["test"]，避免测试文件触发 rootDir 报错；取消跟踪 test/output/ 下 22 个生成产物。
+- 原因：旧跑器 337 行全在手工维护断言与计数，失败只打印两段字符串看不出差异，且必须先 compile 才能跑测试；用户确认采用「只上 Vitest、保留 webpack」的方案 A。
+- 补充说明：@types/node 保持 16.x 未升级——它对应 VS Code 1.74 的真实 Node 16 运行时，升到 18+/20+ 会让代码误用运行时不存在的 API。vitest@3 对该包的要求是 peerOptional，仅影响类型，因此安装时使用 --legacy-peer-deps。
+- 测试状态：[已测试] npm test 51/51 通过（22 格式化 + 22 幂等 + 7 辅助）；npm run compile 通过；npm run bench 正常（avg 2.007ms）；npm run compile-web 通过（dist/extension.js 6.69 KiB）。
+
+- 时间：2026-10-20
 - 操作类型：[修复]
 - 影响文件：
   - src/format-core.ts

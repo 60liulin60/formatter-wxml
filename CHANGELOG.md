@@ -13,7 +13,14 @@
 
 ### 测试
 
-- ✅ 新增 7 个选区格式化辅助函数用例（`trimTrailingNewlines` / `applyBaseIndent`），总量 22 → 29
+- ✅ 新增 7 个选区格式化辅助函数用例（`trimTrailingNewlines` / `applyBaseIndent`）
+- ✅ **测试框架迁移到 Vitest**：测试直接运行 TypeScript 源码，不再依赖先 `tsc` 编译到 `out/`；用例从手写 `console.log` 跑器改为 `describe` / `it.each` / `expect`，失败时给出逐字符差异
+- ✅ 原先只校验幂等的 10 个用例补齐人工审定的 `expected`，变为完整输出比对；测试执行数 29 → 51（22 格式化 + 22 幂等 + 7 辅助）
+- ✅ 新增 `npm run typecheck`（`tsc --noEmit`）并接入 `npm test`，类型错误不会漏过
+
+### 仓库维护
+
+- 🧹 取消跟踪 `test/output/` 下 22 个由测试运行生成的 `.wxml` 产物，与 `.gitignore` 规则保持一致
 
 ### 计划中的功能
 - 更多自定义格式化选项

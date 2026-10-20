@@ -221,7 +221,9 @@ npm install          # 当前仓库未包含 node_modules，需自行安装
 ```powershell
 npm run compile      # tsc 编译 TypeScript → out/
 npm run watch        # tsc 监听编译
-npm test             # 先 compile，再跑 test/formatter.test.js
+npm test             # 类型检查 + 运行 Vitest 全部用例
+npm run typecheck    # 只做类型检查（tsc --noEmit）
+npm run test:watch   # Vitest 监听模式
 npm run bench        # 性能微基准（test/bench.js）
 npm run compile-web  # webpack 打包扩展入口 → dist/extension.js
 npm run watch-web    # webpack 监听模式
@@ -248,12 +250,12 @@ formatter-wxml/
 │   ├── formatter.ts            # 读取 VS Code 配置并委托核心
 │   └── extension.ts            # 命令 + 文档/选区格式化注册
 ├── test/
-│   ├── formatter.test.js       # 22 个格式化用例（含幂等校验）
+│   ├── formatter.test.ts       # Vitest 用例：22 个格式化 + 22 个幂等 + 7 个辅助
 │   ├── bench.js                # 性能微基准
 │   ├── examples/               # 测试输入样例
 │   ├── output/                 # 测试输出（运行时生成，不入库）
 │   └── *.wxml / *.js           # 手工调试用的临时样例，非自动化用例
-├── out/                        # tsc 产物（供 Node 测试使用）
+├── out/                        # tsc 产物（供 bench 使用）
 ├── dist/                       # webpack 产物（扩展真正入口）
 ├── images/                     # 扩展图标
 ├── syntaxes/                   # 历史语法文件（当前未注册）
@@ -261,6 +263,7 @@ formatter-wxml/
 ├── package.json
 ├── tsconfig.json
 ├── webpack.config.js
+├── vitest.config.mts           # Vitest 配置
 ├── CHANGELOG.md
 ├── operateLog.md               # 开发操作日志
 └── LICENSE
@@ -275,7 +278,7 @@ src/formatter.ts     # 读取 VS Code 配置并委托核心
 src/extension.ts     # 命令 / DocumentFormatting / RangeFormatting 注册
 ```
 
-`format-core.ts` 不 import `vscode`，测试与扩展共用同一份实现，因此不存在「测试代码与生产代码分叉」的问题——`test/formatter.test.js` 直接 require 编译产物 `out/format-core`。
+`format-core.ts` 不 import `vscode`，测试与扩展共用同一份实现，因此不存在「测试代码与生产代码分叉」的问题。`test/formatter.test.ts` 直接 import `src/format-core`，由 Vitest 就地转译 TypeScript，无需先编译。
 
 ### 主流程
 
@@ -286,7 +289,25 @@ src/extension.ts     # 命令 / DocumentFormatting / RangeFormatting 注册
 
 ### 测试
 
-`npm test` 会先编译再运行 22 个用例，覆盖条件渲染、列表渲染、四类事件绑定、嵌套三元表达式、带连字符标签、布尔属性、属性值含 `>`、注释伪标签、同名标签长度阈值等场景。每个用例都会做**二次格式化幂等校验**（`format(format(x)) === format(x)`），防止输出逐次漂移；部分用例带 `expected` 做逐字节比对。输出写入 `test/output/`（该目录不入库）。
+测试框架为 [Vitest](https://vitest.dev)，直接运行 TypeScript 源码，无需先编译。
+
+```powershell
+npm test                 # 类型检查 + 跑一次全部用例（CI 用）
+npm run test:watch       # 监听模式，改代码自动重跑
+npx vitest run -t 关键词  # 只跑名字匹配的用例
+```
+
+用例分三组，共 51 次断言：
+
+| 组别 | 数量 | 校验内容 |
+| --- | --- | --- |
+| 格式化输出 | 22 | 逐个比对 `expected` 完整输出 |
+| 二次格式化幂等 | 22 | `format(format(x)) === format(x)`，防止输出逐次漂移 |
+| 选区辅助函数 | 7 | `trimTrailingNewlines` / `applyBaseIndent` 的行为 |
+
+覆盖条件渲染、列表渲染、四类事件绑定、嵌套三元表达式、带连字符标签、布尔属性、属性值含 `>`、注释伪标签、同名标签长度阈值等场景。
+
+新用例直接加进 `test/formatter.test.ts` 的 `testCases` 数组即可，`expected` 必须人工审定——**不要用 `-u` 自动覆盖期望值**，否则会把 bug 一起冻结进测试。
 
 ### 发布
 

@@ -72,6 +72,9 @@ export function formatWxml(text: string, config?: FormatterConfig): string {
       indentCache: [""],
       wrapAttributes: resolved.wrapAttributes,
       inlineTagSet: toTagSet(resolved.inlineTags),
+      packAttributes: resolved.packAttributes === true,
+      attributesPerLine: resolved.attributesPerLine,
+      attributeLineWidth: resolved.attributeLineWidth,
     };
     let result = buildDocument(tokens, runtime);
     result = finalCleanup(result);
@@ -87,6 +90,12 @@ interface BuildRuntime {
   indentCache: string[];
   wrapAttributes: number;
   inlineTagSet: Set<string>;
+  /** 是否开启一行多个属性 */
+  packAttributes: boolean;
+  /** 每行最多属性个数，<= 0 表示不限制 */
+  attributesPerLine: number;
+  /** 属性行最大宽度，<= 0 表示不限制 */
+  attributeLineWidth: number;
 }
 
 /** 标签列表转 Set，便于 O(1) 判定 */
@@ -290,6 +299,48 @@ function indentAt(runtime: BuildRuntime, depth: number): string {
   return cache[depth]!;
 }
 
+/**
+ * 将属性文本按「每行属性数 + 行宽」贪心分组
+ *
+ * 首行需要预留 `<标签名 ` 前缀，续行只含缩进；
+ * 单个属性本身超宽时独占一行，不拆分属性。
+ */
+function packAttributeRows(
+  attrTexts: string[],
+  baseIndent: string,
+  tagName: string,
+  attrIndent: string,
+  perLine: number,
+  widthLimit: number
+): string[][] {
+  // 首行宽度基数：缩进 + "<" + 标签名 + 空格
+  const firstRowBase = baseIndent.length + tagName.length + 2;
+  const nextRowBase = attrIndent.length;
+  const rows: string[][] = [];
+  let current: string[] = [];
+  let currentWidth = firstRowBase;
+
+  for (let i = 0; i < attrTexts.length; i++) {
+    const text = attrTexts[i]!;
+    const separator = current.length > 0 ? 1 : 0;
+    const countFull = perLine > 0 && current.length >= perLine;
+    const widthFull =
+      widthLimit > 0 && currentWidth + separator + text.length > widthLimit;
+    if (current.length > 0 && (countFull || widthFull)) {
+      rows.push(current);
+      current = [];
+      currentWidth = nextRowBase;
+    }
+    current.push(text);
+    currentWidth += (current.length > 1 ? 1 : 0) + text.length;
+  }
+
+  if (current.length > 0) {
+    rows.push(current);
+  }
+  return rows;
+}
+
 /** 将 token 序列重建为带缩进的文档 */
 function buildDocument(tokens: Token[], runtime: BuildRuntime): string {
   const lines: string[] = [];
@@ -297,11 +348,38 @@ function buildDocument(tokens: Token[], runtime: BuildRuntime): string {
   const wrapAt = runtime.wrapAttributes;
   const inlineSet = runtime.inlineTagSet;
 
-  /** 属性数达标或原始开始标签超长则换行 */
+  const formatAttr = (attr: ParsedAttribute): string =>
+    attr.value ? `${attr.name}=${attr.value}` : attr.name;
+
+  /**
+   * 计算当前标签的属性行分组
+   * 关闭一行多个：每个属性独占一行；开启：按数量 / 宽度贪心分组
+   */
+  const buildAttributeRows = (token: Token): string[][] => {
+    const attrs = token.attributes || [];
+    const attrTexts = attrs.map(formatAttr);
+    if (!runtime.packAttributes) {
+      return attrTexts.map((text) => [text]);
+    }
+    return packAttributeRows(
+      attrTexts,
+      indentAt(runtime, depth),
+      token.tagName || "",
+      indentAt(runtime, depth + 1),
+      runtime.attributesPerLine,
+      runtime.attributeLineWidth
+    );
+  };
+
+  /** 属性数达标或原始开始标签超长则换行；开启一行多个后由分组结果决定 */
   const shouldWrapAttributes = (token: Token): boolean => {
     const attrs = token.attributes;
     if (!attrs || attrs.length === 0) {
       return false;
+    }
+    if (runtime.packAttributes) {
+      // 只有一行装不下（数量或宽度超限）才换行
+      return buildAttributeRows(token).length > 1;
     }
     if (attrs.length >= wrapAt) {
       return true;
@@ -311,9 +389,6 @@ function buildDocument(tokens: Token[], runtime: BuildRuntime): string {
       token.tagLength > TAG_LENGTH_WRAP_THRESHOLD
     );
   };
-
-  const formatAttr = (attr: ParsedAttribute): string =>
-    attr.value ? `${attr.name}=${attr.value}` : attr.name;
 
   /** 是否为 <tag>text</tag> 三明治结构 */
   const isInlineSandwich = (
@@ -342,39 +417,32 @@ function buildDocument(tokens: Token[], runtime: BuildRuntime): string {
       (forceTextInlineStyle || isInlineTag);
     const baseIndent = indentAt(runtime, depth);
     const attrIndent = indentAt(runtime, depth + 1);
+    const rows = buildAttributeRows(token);
+
+    // 开启一行多个：首行与标签名同行；关闭：标签名独占一行（保持原输出）
+    lines.push(
+      runtime.packAttributes
+        ? `${baseIndent}<${tagName} ${rows[0]!.join(" ")}`
+        : `${baseIndent}<${tagName}`
+    );
+    const firstRowIndex = runtime.packAttributes ? 1 : 0;
+    for (let r = firstRowIndex; r < rows.length; r++) {
+      lines.push(attrIndent + rows[r]!.join(" "));
+    }
 
     // text 特殊：>内容</text> 挂在标签深度行（与末属性分行）
     if (forceTextInlineStyle && shouldInline) {
-      lines.push(`${baseIndent}<${tagName}`);
-      const attrs = token.attributes;
-      if (attrs) {
-        for (let j = 0; j < attrs.length; j++) {
-          lines.push(attrIndent + formatAttr(attrs[j]!));
-        }
-      }
       lines.push(
         `${baseIndent}>${nextToken!.content}${nextNextToken!.content}`
       );
       return 2;
     }
 
-    lines.push(`${baseIndent}<${tagName}`);
-    const attrs = token.attributes!;
-    const lastIndex = attrs.length - 1;
-
-    for (let j = 0; j <= lastIndex; j++) {
-      const attrStr = formatAttr(attrs[j]!);
-      if (j === lastIndex && shouldInline) {
-        // 其它内联标签：末属性同行收口
-        lines.push(
-          `${attrIndent}${attrStr}>${nextToken!.content}${nextNextToken!.content}`
-        );
-      } else {
-        lines.push(attrIndent + attrStr);
-      }
-    }
-
+    // 其它内联标签：末属性行收口
     if (shouldInline) {
+      lines[lines.length - 1] += `>${nextToken!.content}${
+        nextNextToken!.content
+      }`;
       return 2;
     }
 
@@ -432,14 +500,17 @@ function buildDocument(tokens: Token[], runtime: BuildRuntime): string {
     if (token.type === "selfClose" && shouldWrapAttributes(token)) {
       const baseIndent = indentAt(runtime, depth);
       const attrIndent = indentAt(runtime, depth + 1);
-      lines.push(`${baseIndent}<${token.tagName}`);
-      const attrs = token.attributes!;
-      const lastIndex = attrs.length - 1;
-      for (let j = 0; j <= lastIndex; j++) {
-        const attrStr = formatAttr(attrs[j]!);
-        const suffix = j === lastIndex ? " />" : "";
-        lines.push(attrIndent + attrStr + suffix);
+      const rows = buildAttributeRows(token);
+      lines.push(
+        runtime.packAttributes
+          ? `${baseIndent}<${token.tagName} ${rows[0]!.join(" ")}`
+          : `${baseIndent}<${token.tagName}`
+      );
+      const firstRowIndex = runtime.packAttributes ? 1 : 0;
+      for (let r = firstRowIndex; r < rows.length; r++) {
+        lines.push(attrIndent + rows[r]!.join(" "));
       }
+      lines[lines.length - 1] += " />";
       continue;
     }
 
@@ -480,4 +551,32 @@ function finalCleanup(text: string): string {
   let result = text.replace(STUCK_ATTR_RE, "<$1 $2");
   result = result.replace(DIR_EQ_RE, "$1$2=$4");
   return result;
+}
+
+/**
+ * 去掉格式化结果尾部的换行
+ *
+ * formatWxml 恒定以单个换行结尾，整篇替换时这是正确收口；
+ * 但替换非整篇范围时该换行会落到范围之外，多出一个空行。
+ */
+export function trimTrailingNewlines(text: string): string {
+  return text.replace(/[\r\n]+$/, "");
+}
+
+/**
+ * 为每个非空行补上基准缩进
+ *
+ * 选区格式化时选区被当作独立文档从深度 0 重建，
+ * 需要补回选区首行原有的缩进，才能保持其在父结构中的层级。
+ * @param text 已格式化的文本，每行均从列 0 开始
+ * @param baseIndent 选区首行的原始前导缩进
+ */
+export function applyBaseIndent(text: string, baseIndent: string): string {
+  if (!baseIndent) {
+    return text;
+  }
+  return text
+    .split("\n")
+    .map((line) => (line.length > 0 ? baseIndent + line : line))
+    .join("\n");
 }

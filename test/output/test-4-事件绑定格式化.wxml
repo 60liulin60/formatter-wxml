@@ -1,7 +1,0 @@
-<button
-  bind:tap="onTap"
-  catch:touchstart="onTouch"
-  capture-bind:longpress="onLongPress"
->
-  按钮
-</button>

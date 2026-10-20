@@ -13,6 +13,7 @@ vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
 webpack.config.js
+vitest.config.mts
 
 # TypeScript 文件（已编译）
 **/*.ts
@@ -33,6 +34,10 @@ otherMd/**
 node_modules/**
 package-lock.json
 *.vsix
+
+# pnpm 本地生成文件（本项目使用 npm）
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 # 临时文件和日志
 .DS_Store

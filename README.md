@@ -2,7 +2,7 @@
 
 专为微信小程序 **WXML** 设计的 VS Code 格式化扩展。
 
-当前版本：**1.3.5** · 零运行时依赖 · 22 个格式化用例（含幂等校验）
+当前版本：**1.3.5** · 零运行时依赖 · 31 个格式化用例（含幂等校验）
 
 ## 功能特性
 
@@ -12,6 +12,7 @@
 - **智能换行规则**：
   - 属性数 ≥ `wrapAttributes`（默认 3）时属性换行
   - 或开始标签原始长度 > 100 时属性换行
+  - 开启 `packAttributes` 后可一行多个属性：数量 / 宽度超限时换到下一行，并继续按多个排布
   - `<text>` 多属性换行时，文本内容与 `</text>` 仍保持同行
   - 属性较少且未超长时，内联标签保持单行
 - **自闭合规范化**：`image` / `input` 等可配置标签统一为 `/>` 形式
@@ -58,6 +59,9 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 {
   "wxml-formatter.indentSize": 2,
   "wxml-formatter.wrapAttributes": 3,
+  "wxml-formatter.packAttributes": false,
+  "wxml-formatter.attributesPerLine": 3,
+  "wxml-formatter.attributeLineWidth": 100,
   "wxml-formatter.selfClosingTags": ["image", "input", "icon", "video"],
   "wxml-formatter.inlineTags": ["text", "icon", "rich-text"]
 }
@@ -68,7 +72,10 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 | 配置项 | 默认值 | 说明 |
 |--------|--------|------|
 | `indentSize` | `2` | 缩进空格数 |
-| `wrapAttributes` | `3` | 属性数达到该值时换行 |
+| `wrapAttributes` | `3` | 属性数达到该值时换行（`packAttributes` 开启后不生效） |
+| `packAttributes` | `false` | 是否开启「一行多个属性」 |
+| `attributesPerLine` | `3` | 每行最多属性数，`0` 表示不限 |
+| `attributeLineWidth` | `100` | 属性行最大宽度（含缩进与标签名），`0` 表示不限 |
 | `selfClosingTags` | 14 个标签，见 [package.json](./package.json) | 规范为自闭合的标签 |
 | `inlineTags` | `text` / `icon` / `rich-text` | 内容尽量与标签同行 |
 
@@ -76,10 +83,12 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 
 | 阈值 | 值 | 作用 |
 |------|----|------|
-| 开始标签原始长度 | **100** | 超过则强制属性换行，与 `wrapAttributes` 二选一触发 |
+| 开始标签原始长度 | **100** | 超过则强制属性换行，与 `wrapAttributes` 二选一触发（`packAttributes` 开启后不生效） |
 | 短文本内容上限 | **50** | `<tag>短文本</tag>` 三明治结构可保持单行 |
 
 常量定义见 [`src/defaults.ts`](./src/defaults.ts) 的 `TAG_LENGTH_WRAP_THRESHOLD` 与 `SHORT_TEXT_INLINE_LIMIT`。
+
+> 开启 `packAttributes` 后，是否换行改由 `attributesPerLine` / `attributeLineWidth` 决定，上述 100 阈值不再参与判定。
 
 ### 当前未生效的配置（设置面板仍可见）
 
@@ -93,7 +102,7 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 
 ## 格式化规则
 
-同一处代码按以下优先级从上到下命中，先命中先返回：
+`packAttributes` 关闭（默认）时，同一处代码按以下优先级从上到下命中，先命中先返回：
 
 | 优先级 | 条件 | 输出形态 |
 |--------|------|----------|
@@ -103,6 +112,32 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 | 4 | 自闭合 + 需换行 | 属性逐行，末属性带 ` />` |
 
 其中「三明治结构」指 `<tag>` + 纯文本 + `</tag>` 的紧邻三段。文档输出恒定以单个换行符结尾。
+
+### 一行多个属性（`packAttributes`）
+
+开启 `packAttributes` 后：
+
+1. 所有属性能在「每行属性数 + 行宽」限制内放下时，标签保持单行，不再看 `wrapAttributes` 与 100 字符阈值
+2. 超出任一限制时换行：**首行与 `<标签名` 同行**，续行按同一规则继续放多个属性
+3. 块级标签的 `>` 单独一行；`<text>` 的 `>内容</text>` 与自闭合标签的 ` />` 仍跟随末属性行收口
+4. 单个属性本身超宽时独占一行，属性值不拆分
+5. `attributesPerLine` 或 `attributeLineWidth` 配为 `0` 表示该维度不限
+
+**前：**
+
+```xml
+<view class="outer" data-id="1" bind:tap="onTap" style="color:red" hidden="{{false}}">内容</view>
+```
+
+**后**（`attributesPerLine: 3`）：
+
+```xml
+<view class="outer" data-id="1" bind:tap="onTap"
+  style="color:red" hidden="{{false}}"
+>
+  内容
+</view>
+```
 
 ## 支持的 WXML 语法
 
@@ -202,11 +237,11 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 
 ## 已知限制
 
-1. **选区格式化不保留原始缩进基准**。选区内容会被当作独立文档从深度 0 开始格式化，因此选区若不是完整标签、且原本有缩进，输出会被拍平到左边界。整篇格式化不受影响。
-2. **5 个配置项未接入**，见上文「当前未生效的配置」。
-3. **不接管语法高亮**。仓库内 `syntaxes/wxml.tmLanguage.json` 与 `language-configuration.json` 均为早期遗留，暂未在 `package.json` 中注册。
-4. **不自动抢占默认格式化器**，见「使用方法」中的提示。
-5. 未实现属性对齐与属性排序。
+1. **5 个配置项未接入**，见上文「当前未生效的配置」。
+2. **不接管语法高亮**。仓库内 `syntaxes/wxml.tmLanguage.json` 与 `language-configuration.json` 均为早期遗留，暂未在 `package.json` 中注册。
+3. **不自动抢占默认格式化器**，见「使用方法」中的提示。
+4. 未实现属性对齐与属性排序。
+5. 选区格式化会**扩展到整行**后再格式化，避免从行中间切断标签；选区内原有缩进会被保留。
 
 ## 开发
 
@@ -216,12 +251,26 @@ code --install-extension .\wxml-formatter-1.3.5.vsix
 npm install          # 当前仓库未包含 node_modules，需自行安装
 ```
 
+> **peer 依赖冲突说明**：本项目的 `@types/node` 固定在 16.x，对应 VS Code 1.74 的真实 Node 16 运行时；而 Vitest 对它的要求是 `^18 || ^20 || >=22`（`peerOptional`，仅影响类型，运行时不受影响）。两者相撞会让 `npm install` 直接报 `ERESOLVE` 失败。
+>
+> 解决办法是在仓库根目录放一个 `.npmrc`（不入库，已被 `.gitignore` 忽略）：
+>
+> ```ini
+> legacy-peer-deps=true
+> ```
+>
+> 或者单次安装时带参数：`npm install --legacy-peer-deps`。**不要**把 `@types/node` 升到 18+ 来规避——那会让代码误用 Node 16 运行时不存在的 API。
+>
+> `.npmrc` 也是 npm 存放 registry token 的默认位置，因此这个文件不入库，不要把凭据写进去。
+
 ### 常用命令
 
 ```powershell
 npm run compile      # tsc 编译 TypeScript → out/
 npm run watch        # tsc 监听编译
-npm test             # 先 compile，再跑 test/formatter.test.js
+npm test             # 类型检查 + 运行 Vitest 全部用例
+npm run typecheck    # 只做类型检查（tsc --noEmit）
+npm run test:watch   # Vitest 监听模式
 npm run bench        # 性能微基准（test/bench.js）
 npm run compile-web  # webpack 打包扩展入口 → dist/extension.js
 npm run watch-web    # webpack 监听模式
@@ -248,12 +297,12 @@ formatter-wxml/
 │   ├── formatter.ts            # 读取 VS Code 配置并委托核心
 │   └── extension.ts            # 命令 + 文档/选区格式化注册
 ├── test/
-│   ├── formatter.test.js       # 22 个格式化用例（含幂等校验）
+│   ├── formatter.test.ts       # Vitest 用例：31 个格式化 + 31 个幂等 + 7 个辅助
 │   ├── bench.js                # 性能微基准
 │   ├── examples/               # 测试输入样例
 │   ├── output/                 # 测试输出（运行时生成，不入库）
 │   └── *.wxml / *.js           # 手工调试用的临时样例，非自动化用例
-├── out/                        # tsc 产物（供 Node 测试使用）
+├── out/                        # tsc 产物（供 bench 使用）
 ├── dist/                       # webpack 产物（扩展真正入口）
 ├── images/                     # 扩展图标
 ├── syntaxes/                   # 历史语法文件（当前未注册）
@@ -261,6 +310,7 @@ formatter-wxml/
 ├── package.json
 ├── tsconfig.json
 ├── webpack.config.js
+├── vitest.config.mts           # Vitest 配置
 ├── CHANGELOG.md
 ├── operateLog.md               # 开发操作日志
 └── LICENSE
@@ -275,7 +325,7 @@ src/formatter.ts     # 读取 VS Code 配置并委托核心
 src/extension.ts     # 命令 / DocumentFormatting / RangeFormatting 注册
 ```
 
-`format-core.ts` 不 import `vscode`，测试与扩展共用同一份实现，因此不存在「测试代码与生产代码分叉」的问题——`test/formatter.test.js` 直接 require 编译产物 `out/format-core`。
+`format-core.ts` 不 import `vscode`，测试与扩展共用同一份实现，因此不存在「测试代码与生产代码分叉」的问题。`test/formatter.test.ts` 直接 import `src/format-core`，由 Vitest 就地转译 TypeScript，无需先编译。
 
 ### 主流程
 
@@ -286,7 +336,26 @@ src/extension.ts     # 命令 / DocumentFormatting / RangeFormatting 注册
 
 ### 测试
 
-`npm test` 会先编译再运行 22 个用例，覆盖条件渲染、列表渲染、四类事件绑定、嵌套三元表达式、带连字符标签、布尔属性、属性值含 `>`、注释伪标签、同名标签长度阈值等场景。每个用例都会做**二次格式化幂等校验**（`format(format(x)) === format(x)`），防止输出逐次漂移；部分用例带 `expected` 做逐字节比对。输出写入 `test/output/`（该目录不入库）。
+测试框架为 [Vitest](https://vitest.dev)，直接运行 TypeScript 源码，无需先编译。
+
+```powershell
+npm test                 # 类型检查 + 跑一次全部用例（CI 用）
+npm run test:watch       # 监听模式，改代码自动重跑
+npx vitest run -t 关键词  # 只跑名字匹配的用例
+```
+
+用例分四组，共 69 次断言：
+
+| 组别 | 数量 | 校验内容 |
+| --- | --- | --- |
+| 格式化输出 | 22 | 逐个比对 `expected` 完整输出 |
+| 二次格式化幂等 | 22 | `format(format(x)) === format(x)`，防止输出逐次漂移 |
+| 一行多个属性 | 18 | 开启 `packAttributes` 后的数量 / 宽度换行与幂等 |
+| 选区辅助函数 | 7 | `trimTrailingNewlines` / `applyBaseIndent` 的行为 |
+
+覆盖条件渲染、列表渲染、四类事件绑定、嵌套三元表达式、带连字符标签、布尔属性、属性值含 `>`、注释伪标签、同名标签长度阈值，以及 `packAttributes` 的数量 / 宽度 / 自闭合 / 嵌套缩进 / 关闭开关等场景。
+
+新用例直接加进 `test/formatter.test.ts` 的 `testCases` 数组即可，`expected` 必须人工审定——**不要用 `-u` 自动覆盖期望值**，否则会把 bug 一起冻结进测试。
 
 ### 发布
 
@@ -308,8 +377,11 @@ A: 确认文件扩展名是 `.wxml`，并检查是否被其他格式化扩展覆
 **Q: 改了 `blockTags` / `maxLineLength` 没变化？**  
 A: 这些配置当前未接入运行时，见上文「当前未生效的配置」。
 
+**Q: 怎么让属性一行放多个？**  
+A: 开启 `"wxml-formatter.packAttributes": true`，用 `attributesPerLine`（默认 3）与 `attributeLineWidth`（默认 100）控制每行数量与宽度；任一超限会自动换到下一行并继续多个。
+
 **Q: 选区格式化后缩进错乱了？**  
-A: 见「已知限制」第 1 条，建议改为整篇格式化。
+A: 不会了。1.3.5 起选区会被扩展到整行并从选区内首个有效行恢复基准缩进；若仍异常请提 issue 并附上选区范围。
 
 **Q: 会不会接管语法高亮？**  
 A: 不会。本扩展只做格式化，不抢 WXML 高亮，避免与其他高亮插件冲突。

@@ -1,4 +1,60 @@
 - 时间：2026-10-20
+- 操作类型：[新增]
+- 影响文件：
+  - src/defaults.ts
+  - src/format-core.ts
+  - src/formatter.ts
+  - package.json
+  - test/formatter.test.ts
+  - README.md
+  - CHANGELOG.md
+  - operateLog.md
+- 变更摘要：新增「一行多个属性」配置 packAttributes（默认关闭）、attributesPerLine（默认 3）、attributeLineWidth（默认 100）。开启后 buildDocument 通过 packAttributeRows 按「每行数量 + 行宽」贪心分组：首行与 <标签名 同行，超限换行后继续多个；text 的 >内容</text> 与自闭合的 /> 仍跟随末属性行收口，单个超宽属性独占一行；packAttributes 开启时忽略 wrapAttributes 与 100 字符阈值。新增 9 个用例（数量换行、宽度换行、超宽独占、0 不限、text 收口、自闭合收口、嵌套缩进、关闭开关）及幂等校验。
+- 原因：用户要求可通过配置开启「一行多个属性」，并支持设置每行属性数量与行宽，数量或宽度超出后第二行继续一行多个。
+- 测试状态：[已测试] npm test 69/69 通过（22 格式化 + 22 幂等 + 18 一行多个 + 7 辅助）；npm run typecheck 通过；npm run compile 通过；npm run compile-web 通过（dist/extension.js 7.53 KiB）。
+
+- 时间：2026-10-20
+- 操作类型：[文档]
+- 影响文件：
+  - README.md
+  - CHANGELOG.md
+  - .gitignore
+  - operateLog.md
+- 变更摘要：README「环境准备」补充 peer 依赖冲突说明——@types/node 固定 16.x 对应 VS Code 1.74 的 Node 16 运行时，与 Vitest 的 peerOptional 要求 ^18 || ^20 || >=22 相撞会让 npm install 报 ERESOLVE；给出本地 .npmrc（legacy-peer-deps=true）与单次 --legacy-peer-deps 两种解法，并说明不要把 @types/node 升到 18+ 规避。.gitignore 增加 .npmrc 忽略规则，避免该文件（npm 存放 registry token 的默认位置）被误提交。
+- 原因：测试框架迁移到 Vitest 后，新环境克隆仓库直接 npm install 会失败，但仓库内没有对应说明；本地 .npmrc 若入库还有泄露凭据的风险。
+- 测试状态：[已测试] npm install --dry-run 退出码 0，无 ERESOLVE；npm test 51/51 通过。
+- 说明：本机 .npmrc 由用户手动创建（工具写入被安全策略 secret.basename.npmrc 规则拦截），内容 23 字节，npm config get legacy-peer-deps 返回 true。
+- 时间：2026-10-20
+- 操作类型：[重构]
+- 影响文件：
+  - test/formatter.test.ts（新增，替代 test/formatter.test.js）
+  - test/formatter.test.js（删除）
+  - vitest.config.mts（新增）
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - .gitignore
+  - README.md
+  - CHANGELOG.md
+  - operateLog.md
+- 变更摘要：测试框架从手写 console.log 跑器迁移到 Vitest 3.2.7。测试直接 import src/format-core（Vitest 就地转译 TS），不再依赖 tsc 产物 out/；用例改写为 describe / it.each / expect，新增 npm run typecheck（tsc --noEmit）并接入 npm test；原先只校验幂等的 10 个用例补齐人工审定的 expected；tsconfig 增加 include: ["src"] 与 exclude: ["test"]，避免测试文件触发 rootDir 报错；取消跟踪 test/output/ 下 22 个生成产物。
+- 原因：旧跑器 337 行全在手工维护断言与计数，失败只打印两段字符串看不出差异，且必须先 compile 才能跑测试；用户确认采用「只上 Vitest、保留 webpack」的方案 A。
+- 补充说明：@types/node 保持 16.x 未升级——它对应 VS Code 1.74 的真实 Node 16 运行时，升到 18+/20+ 会让代码误用运行时不存在的 API。vitest@3 对该包的要求是 peerOptional，仅影响类型，因此安装时使用 --legacy-peer-deps。
+- 测试状态：[已测试] npm test 51/51 通过（22 格式化 + 22 幂等 + 7 辅助）；npm run compile 通过；npm run bench 正常（avg 2.007ms）；npm run compile-web 通过（dist/extension.js 6.69 KiB）。
+
+- 时间：2026-10-20
+- 操作类型：[修复]
+- 影响文件：
+  - src/format-core.ts
+  - src/extension.ts
+  - test/formatter.test.js
+  - README.md
+  - CHANGELOG.md
+  - operateLog.md
+- 变更摘要：修复选区格式化丢失基准缩进——选区改为扩展到整行后格式化，再用新增的纯函数 applyBaseIndent 逐行补回选区首行缩进；用 trimTrailingNewlines 去掉尾部换行，避免替换范围外多出空行；选区格式化结果为空时不做替换，避免误删行。新增 7 个辅助函数回归用例。
+- 原因：原实现把选区当独立文档从深度 0 格式化，嵌套块被拍平到左边界；且替换非整篇范围时尾部换行落到范围外产生空行。
+- 测试状态：[已测试] npm test 29/29 通过；npm run compile-web 通过。
+- 时间：2026-10-20
 - 操作类型：[文档]
 - 影响文件：
   - README.md

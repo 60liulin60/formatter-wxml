@@ -1,2 +1,0 @@
-<text>{{user.name + " - " + user.age}}</text>
-<view class="{{isActive ? 'active' : 'inactive'}}">内容</view>

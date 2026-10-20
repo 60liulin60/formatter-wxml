@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { WXMLFormatter } from "./formatter";
+import { applyBaseIndent, trimTrailingNewlines } from "./format-core";
 
 /** 仅匹配磁盘上的 .wxml 文件 */
 const WXML_SELECTOR: vscode.DocumentSelector = [
@@ -20,6 +21,12 @@ function getFullDocumentRange(document: vscode.TextDocument): vscode.Range {
     document.positionAt(0),
     document.positionAt(document.getText().length)
   );
+}
+
+/** 取指定行的前导缩进（空格 / Tab） */
+function getLineIndent(document: vscode.TextDocument, line: number): string {
+  const match = document.lineAt(line).text.match(/^[ \t]*/);
+  return match ? match[0] : "";
 }
 
 /**
@@ -105,10 +112,36 @@ export function activate(context: vscode.ExtensionContext) {
           if (!isWxmlFile(document.fileName)) {
             return [];
           }
-          const formattedText = formatText(document.getText(range));
-          return formattedText
-            ? [vscode.TextEdit.replace(range, formattedText)]
-            : [];
+
+          // 扩展到整行：从行中间开始格式化会造成错位
+          const startLine = range.start.line;
+          let endLine = range.end.line;
+          // 选区恰好结束在行首时，不把下一行纳入处理
+          if (endLine > startLine && range.end.character === 0) {
+            endLine -= 1;
+          }
+          const lineRange = new vscode.Range(
+            new vscode.Position(startLine, 0),
+            document.lineAt(endLine).range.end
+          );
+
+          const formattedText = formatText(document.getText(lineRange));
+          if (!formattedText) {
+            return [];
+          }
+
+          // 选区被视为独立文档从深度 0 重建，需补回首行原有缩进
+          const baseIndent = getLineIndent(document, startLine);
+          const replacement = applyBaseIndent(
+            trimTrailingNewlines(formattedText),
+            baseIndent
+          );
+          // 选区为空内容时不做替换，避免误删行
+          if (!replacement) {
+            return [];
+          }
+
+          return [vscode.TextEdit.replace(lineRange, replacement)];
         },
       }
     );

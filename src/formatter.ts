@@ -45,6 +45,18 @@ export class WXMLFormatter {
         defaults.selfClosingTags
       ),
       inlineTags: config.get<string[]>("inlineTags", defaults.inlineTags),
+      packAttributes: config.get<boolean>(
+        "packAttributes",
+        defaults.packAttributes
+      ),
+      attributesPerLine: config.get<number>(
+        "attributesPerLine",
+        defaults.attributesPerLine
+      ),
+      attributeLineWidth: config.get<number>(
+        "attributeLineWidth",
+        defaults.attributeLineWidth
+      ),
     };
     return this.cachedConfig;
   }
